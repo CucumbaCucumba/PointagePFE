@@ -25,7 +25,6 @@ class Presence extends StatelessWidget{
 
 
 
-
   @override
   Widget build(BuildContext context) {
     List<DateTimeRange> dTR = fp.fPRange();

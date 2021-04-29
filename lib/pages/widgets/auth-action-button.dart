@@ -3,7 +3,6 @@ import 'package:FaceNetAuthentication/pages/db/database.dart';
 import 'package:FaceNetAuthentication/pages/profile.dart';
 import 'package:FaceNetAuthentication/services/facenet.service.dart';
 import 'package:flutter/material.dart';
-import '../home.dart';
 class User {
   String user;
   String password;

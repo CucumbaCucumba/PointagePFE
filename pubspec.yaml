@@ -36,6 +36,7 @@ dependencies:
   image:
   dio: ^4.0.0
   time_chart: ^0.0.8
+  slide_digital_clock: ^1.0.0
 
 dev_dependencies:
   flutter_test:

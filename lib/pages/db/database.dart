@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:FaceNetAuthentication/pages/Presence.dart';
 import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 
 BaseOptions options = BaseOptions(receiveTimeout: 50000, connectTimeout: 50000);
@@ -51,7 +47,7 @@ class DataBaseService {
        S = (dS+ ' ' + S);
     }
     S = S.replaceAll('-',' ').replaceAll(':', ' ');
-    Response response = await dio.put('http://192.168.137.1:8000/presence/$cin',data: {'date': S });
+     await dio.put('http://192.168.137.1:8000/presence/$cin',data: {'date': S });
     return  loadPresenceDate(fp);
   }
   FutureOr loadPresence(int cin)async{
@@ -108,7 +104,6 @@ class DataBaseService {
       dio.interceptors.add(CustomInterceptors());
     }
     Response response = await dio.get('http://192.168.137.1:8000/customers');
-    String d;
     _db = response.data;
     for (int f = 0; f < db.length; f++) {
       _db[f]['faceData'] =
@@ -136,7 +131,7 @@ class DataBaseService {
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }
-    Response response = await dio.post('http://192.168.68.127:8000/customers/add',//192.168.1.16 ip dar 172.0.1.96 ip GST
+    await dio.post('http://192.168.68.127:8000/customers/add',//192.168.1.16 ip dar 172.0.1.96 ip GST
         data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status,'CIN':cin});
   }
 }

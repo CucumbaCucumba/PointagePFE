@@ -46,12 +46,13 @@ class Profile extends StatelessWidget {
             RaisedButton(
                 child: Text('IN/OUT'),
                 onPressed: () async{
-                 fp = await Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Check(fp: fp,user: username)
                     ),
                   );
+                 fp = await DataBaseService().loadPresence(username.cin);
                 }
 
             )

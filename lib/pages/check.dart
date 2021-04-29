@@ -1,5 +1,6 @@
 import 'package:FaceNetAuthentication/pages/Presence.dart';
 import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
+import 'package:slide_digital_clock/slide_digital_clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,8 @@ class Checkk extends State<Check> {
 
   FichePresence fp ;
   User user;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,59 +39,73 @@ class Checkk extends State<Check> {
           child: Container(
             child:Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-              style: TextButton.styleFrom(
-                minimumSize: List,
-              primary: Colors.white,
-                backgroundColor:Colors.teal,
-              ),
-                        onPressed: () async {
-                      DataBaseService db = new DataBaseService();
-                      if(fp.iN == false){
-                        fp=await db.savePresence(fp,user.cin);
-                        Navigator.pop(context,fp);
-                      }else{
-                        print('user already checked in');
-                      }
-                    },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('IN',style:TextStyle(
-                            color: Colors.black,
-                            fontSize: 40,
-                            fontStyle: FontStyle.italic,)),
-                        )),
-                  ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      backgroundColor:Colors.teal,
-
+                  DigitalClock(
+                      digitAnimationStyle: Curves.elasticOut,
+                      is24HourTimeFormat: false,
+                      areaDecoration: BoxDecoration(
+                        color: Colors.transparent,
                       ),
-                    onPressed: ()async{
-                      DataBaseService db = new DataBaseService();
-                      if(fp.iN == true){
-                        fp=await db.savePresence(fp,user.cin);
-                      }else{
-                        print('user did not check in');
-                      }
-                    },
-                    child: Text('OUT',style:TextStyle(
-                      color: Colors.black,
-                      fontSize: 40,
-                      fontStyle: FontStyle.italic,)))
-                ],
+                hourMinuteDigitTextStyle: TextStyle(
+                color: Colors.blueGrey,
+                fontSize: 50,
               ),
-            ) ,
-          ),
-        ),
-      )
-      ,
+              amPmDigitTextStyle: TextStyle(
+                  color: Colors.blueGrey, fontWeight: FontWeight.bold),
+            ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor:Colors.teal,
+                          ),
+                          onPressed: () async {
+                        DataBaseService db = new DataBaseService();
+                        if(fp.iN == false){
+                          fp=await db.savePresence(fp,user.cin);
+                          Navigator.pop(context,fp);
+                        }else{
+                          print('user already checked in');
+                        }
+                      },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('IN',style:TextStyle(
+                              color: Colors.black,
+                              fontSize: 40,
+                              fontStyle: FontStyle.italic,))))),
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.white,
+                                    backgroundColor:Colors.teal,
+                                  ),
+                                  onPressed: ()async{
+                                    DataBaseService db = new DataBaseService();
+                                    if(fp.iN == true){
+                                      fp=await db.savePresence(fp,user.cin);
+                                      Navigator.pop(context,fp);
+                                    }else{
+                                      print('user did not check in');
+                                    }
+                                  },
+                                  child: Text('OUT',style:TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 40,
+                                    fontStyle: FontStyle.italic,)))
+                    ]),
+
+                 fp.iN?Text('You''re Checked In'):Text('You''re checked out')
+                ])
+            )
+          )
+       )
+     )
     );
   }
-
-
 }
