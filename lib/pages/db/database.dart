@@ -50,6 +50,15 @@ class DataBaseService {
      await dio.put('http://192.168.137.1:8000/presence/$cin',data: {'date': S });
     return  loadPresenceDate(fp);
   }
+
+  changeUserInfo(String pass,String userName,int modifiedcin,int truecin)async{
+    if (dio.interceptors.isEmpty) {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    Response response = await dio.put('http://192.168.137.1:8000/customers/$truecin',data: {'password' : pass, 'userName': userName, 'CIN':modifiedcin });
+
+  }
+
   FutureOr loadPresence(int cin)async{
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());

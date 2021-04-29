@@ -1,4 +1,5 @@
 import 'package:FaceNetAuthentication/pages/Presence.dart';
+import 'package:FaceNetAuthentication/pages/viewAccount.dart';
 import 'package:FaceNetAuthentication/pages/check.dart';
 import 'package:FaceNetAuthentication/pages/db/database.dart';
 import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
@@ -9,7 +10,7 @@ class Profile extends StatelessWidget {
    Profile({Key key, @required this.username, @required this.fp}) : super(key: key);
 
   FichePresence fp;
-  final User username;
+  User username;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +20,8 @@ class Profile extends StatelessWidget {
       ),
       body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
 
             RaisedButton(
@@ -46,13 +49,25 @@ class Profile extends StatelessWidget {
             RaisedButton(
                 child: Text('IN/OUT'),
                 onPressed: () async{
-                  await Navigator.push(
+                 username = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Check(fp: fp,user: username)
                     ),
                   );
                  fp = await DataBaseService().loadPresence(username.cin);
+                }
+
+            ),
+            RaisedButton(
+                child: Text('Change Password'),
+                onPressed: () async{
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewAccount(username)
+                    ),
+                  );
                 }
 
             )

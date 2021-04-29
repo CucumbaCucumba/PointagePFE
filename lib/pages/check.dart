@@ -29,10 +29,13 @@ class Checkk extends State<Check> {
 
   FichePresence fp ;
   User user;
-
+  DateTime lD;
 
   @override
   Widget build(BuildContext context) {
+    if(fp.dates.isNotEmpty) {
+      lD = fp.dates.last;
+    }
     return Scaffold(
       body:SafeArea(
         child: Center(
@@ -100,7 +103,7 @@ class Checkk extends State<Check> {
                                     fontStyle: FontStyle.italic,)))
                     ]),
 
-                 fp.iN?Text('You''re Checked In'):Text('You''re checked out')
+                 fp.iN?Text('You''re Checked In at $lD'):Text('You''re checked out at $lD')
                 ])
             )
           )
