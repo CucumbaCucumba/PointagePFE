@@ -27,6 +27,7 @@ class SignIn extends StatefulWidget {
 
 class SignInState extends State<SignIn> {
   /// Service injection
+  ///
   CameraService _cameraService = CameraService();
   MLVisionService _mlVisionService = MLVisionService();
   FaceNetService _faceNetService = FaceNetService();

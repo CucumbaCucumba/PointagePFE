@@ -1,9 +1,13 @@
+import 'package:FaceNetAuthentication/pages/Presence.dart';
 import 'package:FaceNetAuthentication/pages/db/database.dart';
+import 'package:FaceNetAuthentication/pages/profile.dart';
 import 'package:FaceNetAuthentication/pages/sign-in.dart';
 import 'package:FaceNetAuthentication/pages/sign-up.dart';
+import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
 import 'package:FaceNetAuthentication/services/facenet.service.dart';
 import 'package:FaceNetAuthentication/services/ml_vision_service.dart';
 import 'package:camera/camera.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -97,6 +101,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                     },
                   ),
+                  TextButton(onPressed: ()async{
+                    Dio dio = new Dio();
+                    User u = await _dataBaseService.loadUser(10);
+                    int cin = u.cin;
+                    FichePresence fPresence = await _dataBaseService.loadPresence(cin);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Profile(
+                              username: u,
+                              fp: fPresence,
+                            )));
+                  }, child: Text('Skip')),
                 ],
               ),
             )

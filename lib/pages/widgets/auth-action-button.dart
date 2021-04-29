@@ -1,3 +1,4 @@
+import 'package:FaceNetAuthentication/pages/Presence.dart';
 import 'package:FaceNetAuthentication/pages/db/database.dart';
 import 'package:FaceNetAuthentication/pages/profile.dart';
 import 'package:FaceNetAuthentication/services/facenet.service.dart';
@@ -6,11 +7,13 @@ import '../home.dart';
 class User {
   String user;
   String password;
+  String status;
+  int cin;
 
-  User({@required this.user, @required this.password});
+  User({@required this.user, @required this.password,@required this.status,@required this.cin});
 
   static User fromDB(var dbuser) {
-    return new User(user: dbuser['userName'], password: dbuser['password'] );
+    return new User(user: dbuser['userName'], password: dbuser['password'],status:dbuser['status'],cin: dbuser['CIN'] );
   }
 }
 
@@ -34,31 +37,18 @@ class _AuthActionButtonState extends State<AuthActionButton> {
   User predictedUser;
   String V;
 
-  Future _signUp(context) async {
-
-    /// gets predicted data from facenet service (user face detected)
-    List predictedData = _faceNetService.predictedData;
-    String user = _userTextEditingController.text;
-    String password = _passwordTextEditingController.text;
-
-    /// creates a new user in the 'database'
-    print(predictedData);
-    await _dataBaseService.saveData(user, password, predictedData.toString().replaceAll(" ", ""),V);
-
-    /// resets the face stored in the face net sevice
-    this._faceNetService.setPredictedData(null);
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
-  }
 
   Future _signIn(context) async {
     String password = _passwordTextEditingController.text;
 
     if (this.predictedUser.password == password) {
+      FichePresence fPresence = await _dataBaseService.loadPresence(this.predictedUser.cin);
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => Profile(
-                    username: this.predictedUser.user,
+                    username: this.predictedUser,
+                    fp: fPresence,
                   )));
     } else {
       print(" WRONG PASSWORD!");
@@ -67,7 +57,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
   int _predictUser() {
     int userAndPass = _faceNetService.predict();
-    return userAndPass?? null;
+    return userAndPass;
   }
 
   @override
@@ -143,7 +133,6 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                 onChanged: (String value) {
                   setState(() {
                     V = value;
-                    print('oyy');
                   });
 
                 },
@@ -157,7 +146,6 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                 onChanged: (String value) {
                   setState(() {
                     V = value;
-                    print('oy');
                   });
 
                 },
@@ -172,14 +160,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                       await _signIn(context);
                     },
                   )
-                : !widget.isLogin
-                    ? RaisedButton(
-                        child: Text('Sign Up!'),
-                        onPressed: () async {
-                          print('tttt');
-                          await _signUp(context);
-                        },
-                      )
+
                     : Container(),
           ],
         ),]

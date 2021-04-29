@@ -27,7 +27,7 @@ class SignUpPState extends State<SignUpPage>{
 
   final TextEditingController _userTextEditingController = TextEditingController(text: '');
   final TextEditingController _passwordTextEditingController = TextEditingController(text: '');
-  final TextEditingController _statusTextEditingController = TextEditingController(text: '');
+  final TextEditingController _cINTextEditingController = TextEditingController(text: '');
   String V;
 
   @override
@@ -53,10 +53,11 @@ class SignUpPState extends State<SignUpPage>{
     List predictedData = _faceNetService.predictedData;
     String user = _userTextEditingController.text;
     String password = _passwordTextEditingController.text;
+    String cin = _cINTextEditingController.text;
 
     /// creates a new user in the 'database'
     print(predictedData);
-    await _dataBaseService.saveData(user, password, predictedData.toString().replaceAll(" ", ""),V);
+    await _dataBaseService.saveData(user, password, predictedData.toString().replaceAll(" ", ""),V,cin);
 
     /// resets the face stored in the face net sevice
     this._faceNetService.setPredictedData(null);
@@ -79,6 +80,10 @@ class SignUpPState extends State<SignUpPage>{
               decoration: InputDecoration(labelText: "Password"),
               obscureText: true,
               ),
+              TextField(
+                controller:_cINTextEditingController,
+                decoration: InputDecoration(labelText: "CIN"),
+              ),
               ListTile(
                 title: const Text('user'),
                 leading: Radio(
@@ -87,7 +92,6 @@ class SignUpPState extends State<SignUpPage>{
                   onChanged: (String value) {
                     setState(() {
                       V = value;
-                      print('oy');
                     });
 
                   },
@@ -101,7 +105,6 @@ class SignUpPState extends State<SignUpPage>{
                   onChanged: (String value) {
                     setState(() {
                       V = value;
-                      print('oyy');
                     });
 
                   },
@@ -110,7 +113,6 @@ class SignUpPState extends State<SignUpPage>{
               RaisedButton(
                 child: Text('Sign Up!'),
                 onPressed: () async {
-                  print('tttt');
                   await _signUp(context);
                 },
               )

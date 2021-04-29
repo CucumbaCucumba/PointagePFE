@@ -1,10 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:FaceNetAuthentication/pages/Presence.dart';
+import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 
+BaseOptions options = BaseOptions(receiveTimeout: 50000, connectTimeout: 50000);
+String dS ;
 class DataBaseService {
+
   // singleton boilerplate
   static final DataBaseService _cameraServiceService = DataBaseService
       ._internal();
@@ -17,19 +23,91 @@ class DataBaseService {
   // singleton boilerplate
   DataBaseService._internal();
 
-  /// file that stores the data on filesystem
-  File jsonFile;
 
   /// Data learned on memory
   List<dynamic> _db = List.empty();
-
   List<dynamic> get db => this._db;
-  var dio = Dio();
+  var dio = Dio(options);
 
   /// loads from database
-  Future loadDB() async {
+  Future<FichePresence> savePresence(FichePresence fp, int cin)async{
+    if (dio.interceptors.isEmpty)
+    {
     dio.interceptors.add(CustomInterceptors());
-    Response response = await dio.get('http://192.168.1.16:8000/customers');
+    }
+    var S;
+    var dTN = DateTime.now().toString().substring(0,DateTime.now().toString().indexOf('.'));
+    if (dS==null){
+      S = 'I '+dTN;
+    }else{
+      if(dS[dS.length-21]=='O'){
+        S = 'I '+dTN;
+      }else{
+        S = 'O '+dTN;
+      }
+    }
+
+    if (dS != null){
+       S = (dS+ ' ' + S);
+    }
+    S = S.replaceAll('-',' ').replaceAll(':', ' ');
+    Response response = await dio.put('http://192.168.137.1:8000/presence/$cin',data: {'date': S });
+    return  loadPresenceDate(fp);
+  }
+  FutureOr loadPresence(int cin)async{
+    if (dio.interceptors.isEmpty) {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    Response response = await dio.get('http://192.168.137.1:8000/presence/get/$cin');
+    List<DateTime> dr = [];
+    bool b = false;
+    dS = response.data['dates'];
+      if (dS != null) {
+      List<String> lS = dS.split(" ");
+      for (int i=0;i<lS.length;i=i+7) {
+        if(lS[i]=='I'){
+          b = true;
+        }else{
+          b = false;
+        }
+        dr.add(DateTime(int.parse(lS[i+1]),int.parse(lS[i+2]),int.parse(lS[i+3]),int.parse(lS[i+4]),int.parse(lS[i+5]),int.parse(lS[i+6])));
+      }
+    }
+    FichePresence fp = new FichePresence(int.parse(response.data['CIN']),dr,b);
+      return fp;
+
+  }
+
+  Future<FichePresence> loadPresenceDate(FichePresence f )async{
+    if (dio.interceptors.isEmpty) {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    var cIN=f.cin;
+    Response response = await dio.get('http://192.168.137.1:8000/presence/get/$cIN');
+    List<DateTime> dr = [];
+    bool b = false;
+    dS = response.data['dates'];
+    if (dS != null) {
+      List<String> lS = dS.split(" ");
+      for (int i=0;i<lS.length;i=i+7) {
+        if(lS[i]=='I'){
+          b = true;
+        }else{
+          b = false;
+        }
+        dr.add(DateTime(int.parse(lS[i+1]),int.parse(lS[i+2]),int.parse(lS[i+3]),int.parse(lS[i+4]),int.parse(lS[i+5]),int.parse(lS[i+6])));
+      }
+    }
+    FichePresence fp = new FichePresence(int.parse(response.data['CIN']),dr,b);
+    return fp;
+
+  }
+
+  Future loadDB() async {
+    if (dio.interceptors.isEmpty) {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    Response response = await dio.get('http://192.168.137.1:8000/customers');
     String d;
     _db = response.data;
     for (int f = 0; f < db.length; f++) {
@@ -39,20 +117,29 @@ class DataBaseService {
     }
   }
 
-
+  Future loadUser(int cin) async {
+    if (dio.interceptors.isEmpty) {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    Response response = await dio.get('http://192.168.137.1:8000/customers/$cin');
+    User u = new User();
+    u.cin=response.data['CIN'];
+    u.user=response.data['userName'];
+    u.status=response.data['status'];
+    u.password=response.data['password'];
+    return u;
+  }
 
   /// [Name]: name of the new user
   /// [Data]: Face representation for Machine Learning model
-  Future saveData(String user, String password, String modelData, String status) async {
-    dio.interceptors.add(CustomInterceptors());
-    //String userAndPass = user + ':' + password;
-    //_db[userAndPass] = modelData;
-    //jsonFile.writeAsStringSync(json.encode(_db));
-    Response response = await dio.post('http://192.168.1.16:8000/customers/add',
-        data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status});
+  Future saveData(String user, String password, String modelData, String status,String cin) async {
+    if (dio.interceptors.isEmpty) {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    Response response = await dio.post('http://192.168.68.127:8000/customers/add',//192.168.1.16 ip dar 172.0.1.96 ip GST
+        data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status,'CIN':cin});
   }
 }
-
 
 class CustomInterceptors extends Interceptor {
   @override
