@@ -1,23 +1,24 @@
 import 'dart:async';
-import 'package:FaceNetAuthentication/pages/Presence.dart';
-import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:dio/dio.dart';
 
 BaseOptions options = BaseOptions(receiveTimeout: 50000, connectTimeout: 50000);
 String dS ;
-class DataBaseService {
+class ApiService {
 
   // singleton boilerplate
-  static final DataBaseService _cameraServiceService = DataBaseService
+  static final ApiService _cameraServiceService = ApiService
       ._internal();
 
 
-  factory DataBaseService() {
+  factory ApiService() {
     return _cameraServiceService;
   }
 
   // singleton boilerplate
-  DataBaseService._internal();
+  ApiService._internal();
 
 
   /// Data learned on memory
@@ -69,13 +70,13 @@ class DataBaseService {
     dS = response.data['dates'];
       if (dS != null) {
       List<String> lS = dS.split(" ");
-      for (int i=0;i<lS.length;i=i+7) {
-        if(lS[i]=='I'){
+      for (int i=lS.length;i>0;i=i-7) {
+        if(lS[i-7]=='I'){
           b = true;
         }else{
           b = false;
         }
-        dr.add(DateTime(int.parse(lS[i+1]),int.parse(lS[i+2]),int.parse(lS[i+3]),int.parse(lS[i+4]),int.parse(lS[i+5]),int.parse(lS[i+6])));
+        dr.add(DateTime(int.parse(lS[i-6]),int.parse(lS[i-5]),int.parse(lS[i-4]),int.parse(lS[i-3]),int.parse(lS[i-2]),int.parse(lS[i-1])));
       }
     }
     FichePresence fp = new FichePresence(int.parse(response.data['CIN']),dr,b);
@@ -108,6 +109,7 @@ class DataBaseService {
 
   }
 
+
   Future loadDB() async {
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
@@ -131,17 +133,18 @@ class DataBaseService {
     u.user=response.data['userName'];
     u.status=response.data['status'];
     u.password=response.data['password'];
+    u.wage=response.data['wage'];
     return u;
   }
 
   /// [Name]: name of the new user
   /// [Data]: Face representation for Machine Learning model
-  Future saveData(String user, String password, String modelData, String status,String cin) async {
+  Future saveData(String user, String password, String modelData, String status,String cin,String wage) async {
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }
-    await dio.post('http://192.168.68.127:8000/customers/add',//192.168.1.16 ip dar 172.0.1.96 ip GST
-        data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status,'CIN':cin});
+    await dio.post('http://192.168.137.1:8000/customers/add',//192.168.1.16 ip dar 172.0.1.96 ip GST
+        data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status,'CIN':cin,'Wage':wage});
   }
 }
 

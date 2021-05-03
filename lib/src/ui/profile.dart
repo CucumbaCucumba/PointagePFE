@@ -1,8 +1,9 @@
-import 'package:FaceNetAuthentication/pages/Presence.dart';
-import 'package:FaceNetAuthentication/pages/viewAccount.dart';
-import 'package:FaceNetAuthentication/pages/check.dart';
-import 'package:FaceNetAuthentication/pages/db/database.dart';
-import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/viewAccount.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/check.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 
@@ -49,18 +50,19 @@ class Profile extends StatelessWidget {
             RaisedButton(
                 child: Text('IN/OUT'),
                 onPressed: () async{
-                 username = await Navigator.push(
+                 fp = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Check(fp: fp,user: username)
                     ),
                   );
-                 fp = await DataBaseService().loadPresence(username.cin);
+                 fp = await ApiService().loadPresence(username.cin);
                 }
 
             ),
             RaisedButton(
-                child: Text('Change Password'),
+                child: Text('Account settings'
+                    ''),
                 onPressed: () async{
                   await Navigator.push(
                     context,

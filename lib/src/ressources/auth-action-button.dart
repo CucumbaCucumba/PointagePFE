@@ -1,20 +1,10 @@
-import 'package:FaceNetAuthentication/pages/Presence.dart';
-import 'package:FaceNetAuthentication/pages/db/database.dart';
-import 'package:FaceNetAuthentication/pages/profile.dart';
-import 'package:FaceNetAuthentication/services/facenet.service.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/profile.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/material.dart';
-class User {
-  String user;
-  String password;
-  String status;
-  int cin;
 
-  User({@required this.user, @required this.password,@required this.status,@required this.cin});
-
-  static User fromDB(var dbuser) {
-    return new User(user: dbuser['userName'], password: dbuser['password'],status:dbuser['status'],cin: dbuser['CIN'] );
-  }
-}
 
 class AuthActionButton extends StatefulWidget {
   AuthActionButton(this._initializeControllerFuture, {@required this.onPressed, @required this.isLogin});
@@ -28,7 +18,7 @@ class AuthActionButton extends StatefulWidget {
 class _AuthActionButtonState extends State<AuthActionButton> {
   /// service injection
   final FaceNetService _faceNetService = FaceNetService();
-  final DataBaseService _dataBaseService = DataBaseService();
+  final ApiService _dataBaseService = ApiService();
 
   final TextEditingController _userTextEditingController = TextEditingController(text: '');
   final TextEditingController _passwordTextEditingController = TextEditingController(text: '');

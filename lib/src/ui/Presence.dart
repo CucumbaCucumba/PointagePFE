@@ -12,7 +12,7 @@ class FichePresence {
 
     List<DateTimeRange> data = [];
     for (int i =0 ; i<this.dates.length;i=i+2){
-      data.add(DateTimeRange(start: this.dates[i],end: this.dates[i+1]));
+      data.add(DateTimeRange(start: this.dates[i+1],end: this.dates[i]));
     }
     return data;
   }
@@ -40,7 +40,8 @@ class Presence extends StatelessWidget{
                         data: dTR,
                         viewMode: ViewMode.weekly,
                         chartType: ChartType.amount,
-                    )]
+                    ),
+                    Text(dTR[3].duration.inHours.toString())]
                   ),
           ),
         ),

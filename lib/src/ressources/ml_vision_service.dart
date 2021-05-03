@@ -1,4 +1,4 @@
-import 'package:FaceNetAuthentication/services/camera.service.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/camera.service.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';

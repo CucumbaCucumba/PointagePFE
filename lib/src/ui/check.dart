@@ -1,10 +1,11 @@
-import 'package:FaceNetAuthentication/pages/Presence.dart';
-import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'db/database.dart';
+import '../ressources/api_provider.dart';
 
 class Check extends StatefulWidget {
 
@@ -69,7 +70,7 @@ class Checkk extends State<Check> {
                             backgroundColor:Colors.teal,
                           ),
                           onPressed: () async {
-                        DataBaseService db = new DataBaseService();
+                        ApiService db = new ApiService();
                         if(fp.iN == false){
                           fp=await db.savePresence(fp,user.cin);
                           Navigator.pop(context,fp);
@@ -89,7 +90,7 @@ class Checkk extends State<Check> {
                                     backgroundColor:Colors.teal,
                                   ),
                                   onPressed: ()async{
-                                    DataBaseService db = new DataBaseService();
+                                    ApiService db = new ApiService();
                                     if(fp.iN == true){
                                       fp=await db.savePresence(fp,user.cin);
                                       Navigator.pop(context,fp);

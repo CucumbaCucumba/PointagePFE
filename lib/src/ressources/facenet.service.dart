@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:FaceNetAuthentication/pages/db/database.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tflite;
@@ -16,7 +16,7 @@ class FaceNetService {
   // singleton boilerplate
   FaceNetService._internal();
 
-  DataBaseService _dataBaseService = DataBaseService();
+  ApiService _dataBaseService = ApiService();
 
   tflite.Interpreter _interpreter;
 

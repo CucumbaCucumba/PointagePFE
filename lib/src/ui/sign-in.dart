@@ -1,11 +1,11 @@
 // A screen that allows users to take a picture using a given camera.
 import 'dart:async';
 import 'dart:io';
-import 'package:FaceNetAuthentication/pages/widgets/FacePainter.dart';
-import 'package:FaceNetAuthentication/pages/widgets/auth-action-button.dart';
-import 'package:FaceNetAuthentication/services/camera.service.dart';
-import 'package:FaceNetAuthentication/services/facenet.service.dart';
-import 'package:FaceNetAuthentication/services/ml_vision_service.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/FacePainter.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/camera.service.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
+import 'file:///E:/PointagePFE/lib/src/ressources/ml_vision_service.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +13,13 @@ import 'package:path/path.dart' show join;
 import 'dart:math' as math;
 import 'package:path_provider/path_provider.dart';
 
+// ignore: must_be_immutable
 class SignIn extends StatefulWidget {
-  final CameraDescription cameraDescription;
-
-  const SignIn({
+   CameraDescription cameraDescription1;
+   CameraDescription cameraDescription2;
+   SignIn({
     Key key,
-    @required this.cameraDescription,
+    @required this.cameraDescription1,@required this.cameraDescription2,
   }) : super(key: key);
 
   @override
@@ -28,6 +29,9 @@ class SignIn extends StatefulWidget {
 class SignInState extends State<SignIn> {
   /// Service injection
   ///
+  CameraDescription cameraDescription1;
+  CameraDescription cameraDescription2;
+
   CameraService _cameraService = CameraService();
   MLVisionService _mlVisionService = MLVisionService();
   FaceNetService _faceNetService = FaceNetService();
@@ -48,6 +52,7 @@ class SignInState extends State<SignIn> {
 
   @override
   void initState() {
+
     super.initState();
 
     /// starts the camera & start framing faces
@@ -63,7 +68,8 @@ class SignInState extends State<SignIn> {
 
   /// starts the camera & start framing faces
   _start() async {
-    _initializeControllerFuture = _cameraService.startService(widget.cameraDescription);
+
+    _initializeControllerFuture = _cameraService.startService(widget.cameraDescription1);
     await _initializeControllerFuture;
 
     setState(() {
