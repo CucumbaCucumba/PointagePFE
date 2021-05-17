@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/profile.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/sign-in.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
+import 'sign-in.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/sign-up.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
@@ -12,6 +14,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/Constants.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'idConfirmation.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -24,6 +29,12 @@ class _MyHomePageState extends State<MyHomePage> {
   FaceNetService _faceNetService = FaceNetService();
   MLVisionService _mlVisionService = MLVisionService();
   ApiService _dataBaseService = ApiService();
+
+  SnackBar twix = new SnackBar(content: Text('wrong CIN format must be 8 digits long'));
+
+  final TextEditingController _cINTextEditingController = TextEditingController(text: '');
+
+
 
   CameraDescription cameraDescriptionF;
   CameraDescription cameraDescriptionB;
@@ -89,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: TextField(
+                        controller: _cINTextEditingController ,
                         keyboardType: TextInputType.number,
                         inputFormatters:<TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
@@ -102,15 +114,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
                     RaisedButton(
                       child: Text('Sign In'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => SignIn(
-                              cameraDescription1: cameraDescriptionF,cameraDescription2: cameraDescriptionB ,
-                            ),
-                          ),
-                        );
+                      onPressed: () async{
+                        if(_cINTextEditingController.text.length!=8){
+                          ScaffoldMessenger.of(context).showSnackBar(twix);
+                        }else{
+                          var cin = int.parse(_cINTextEditingController.text);
+                          try{
+                             await _dataBaseService.loadUser(cin);}
+                             catch(e){
+                              print(e);
+                             }
+                          Directory tempDir = await getTemporaryDirectory();
+                      //    Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //             builder: (BuildContext context) => SignIn(cameraDescription1: cameraDescriptionF,),
+                      //           ),
+                      //        );
+
+                         Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                           builder: (BuildContext context) => IdConfirm(path: tempDir.path,u: _dataBaseService.currUser,),
+                         ),
+                           );
+                        }
                       },
                     ),
                    RaisedButton(
@@ -129,14 +157,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
                     TextButton(onPressed: ()async{
                       Dio dio = new Dio();
-                      User u = await _dataBaseService.loadUser(12845016);
-                      int cin = u.cin;
+                      await _dataBaseService.loadUser(12845017);
+                      int cin = _dataBaseService.currUser.cin;
                       FichePresence fPresence = await _dataBaseService.loadPresence(cin);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) => Profile(
-                                username: u,
+                                username: _dataBaseService.currUser,
                                 fp: fPresence,
                               )));
                     }, child: Text('Skip')),

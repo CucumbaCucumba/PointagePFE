@@ -5,6 +5,8 @@ import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io' as Io;
+import 'dart:convert';
 
 
 import '../ressources/api_provider.dart';
@@ -33,6 +35,7 @@ class SignUpPState extends State<SignUpPage>{
   final TextEditingController _passwordTextEditingController = TextEditingController(text: '');
   final TextEditingController _cINTextEditingController = TextEditingController(text: '');
   final TextEditingController _wageTextEditingController = TextEditingController(text: '');
+  final TextEditingController _workLocationTextEditingController = TextEditingController(text: '');
   final snackBar = SnackBar(content: Text('CIN already exists !!!'));
   String V;
   Color c = Colors.white.withOpacity(0.0) ;
@@ -63,11 +66,12 @@ class SignUpPState extends State<SignUpPage>{
     String password = _passwordTextEditingController.text;
     String cin = _cINTextEditingController.text;
     String wage =_wageTextEditingController.text;
+    String wL =_workLocationTextEditingController.text;
 
     print(predictedData);
     User test;
     try{
-     test = await _dataBaseService.loadUser(int.parse(cin));
+      test = await _dataBaseService.loadUser(int.parse(cin));
     }catch(e){
       print(e);
     }
@@ -78,7 +82,9 @@ class SignUpPState extends State<SignUpPage>{
       });
 
     }else{
-    await _dataBaseService.saveData(user, password, predictedData.toString().replaceAll(" ", ""),V,cin,wage);
+      final bytes = Io.File(_faceNetService.path).readAsBytesSync();
+      String img64 = base64Encode(bytes);
+    await _dataBaseService.saveData(user, password, predictedData.toString().replaceAll(" ", ""),V,cin,wage,img64,wL);
 
     /// resets the face stored in the face net sevice
     this._faceNetService.setPredictedData(null);
@@ -117,7 +123,11 @@ class SignUpPState extends State<SignUpPage>{
                 inputFormatters: [_amountValidator],
 
                 decoration: InputDecoration(labelText: "Wage"),
+
               ),
+              TextField(
+                  controller: _workLocationTextEditingController,
+                  decoration: InputDecoration(labelText: "Work Location")),
               ListTile(
                 title: const Text('user'),
                 leading: Radio(

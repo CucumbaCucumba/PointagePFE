@@ -6,6 +6,8 @@ import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/camera.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/ml_vision_service.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +19,14 @@ import 'package:path_provider/path_provider.dart';
 class SignIn extends StatefulWidget {
    CameraDescription cameraDescription1;
    CameraDescription cameraDescription2;
+   User user;
    SignIn({
     Key key,
-    @required this.cameraDescription1,@required this.cameraDescription2,
+    @required this.cameraDescription1,@required this.user,
   }) : super(key: key);
 
   @override
-  SignInState createState() => SignInState();
+  SignInState createState() => SignInState(user);
 }
 
 class SignInState extends State<SignIn> {
@@ -31,10 +34,10 @@ class SignInState extends State<SignIn> {
   ///
   CameraDescription cameraDescription1;
   CameraDescription cameraDescription2;
-
   CameraService _cameraService = CameraService();
   MLVisionService _mlVisionService = MLVisionService();
   FaceNetService _faceNetService = FaceNetService();
+
 
   Future _initializeControllerFuture;
 
@@ -49,6 +52,9 @@ class SignInState extends State<SignIn> {
   String imagePath;
   Size imageSize;
   Face faceDetected;
+  User user;
+  SignInState(this.user);
+
 
   @override
   void initState() {
@@ -103,7 +109,7 @@ class SignInState extends State<SignIn> {
               if (_saving){
 
                  _saving = false;
-                await _faceNetService.setCurrentPrediction(image, faceDetected);
+                 _faceNetService.setCurrentPrediction(image, faceDetected,);
               }
 
             } else {
@@ -128,7 +134,7 @@ class SignInState extends State<SignIn> {
     if (faceDetected == null) {
       showDialog(
           context: context,
-          builder: (_) => AlertDialog(
+          builder: (context) => AlertDialog(
             content: Text('No face detected!'),
           ));
 
@@ -207,6 +213,7 @@ class SignInState extends State<SignIn> {
               _initializeControllerFuture,
               onPressed: onShot,
               isLogin: true,
+              user:user
             )
           : Container(),
     );

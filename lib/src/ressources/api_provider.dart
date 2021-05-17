@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:dio/dio.dart';
 
 BaseOptions options = BaseOptions(receiveTimeout: 50000, connectTimeout: 50000);
-String dS ;
+
 class ApiService {
 
   // singleton boilerplate
@@ -24,6 +25,8 @@ class ApiService {
   /// Data learned on memory
   List<dynamic> _db = List.empty();
   List<dynamic> get db => this._db;
+  User _currUser = new User();
+  User get currUser => this._currUser;
   var dio = Dio(options);
 
   /// loads from database
@@ -32,6 +35,8 @@ class ApiService {
     {
     dio.interceptors.add(CustomInterceptors());
     }
+    Response response = await dio.get('http://192.168.137.1:8000/presence/get/$cin');
+    String dS = response.data['dates'];
     var S;
     var dTN = DateTime.now().toString().substring(0,DateTime.now().toString().indexOf('.'));
     if (dS==null){
@@ -60,22 +65,23 @@ class ApiService {
 
   }
 
-  FutureOr loadPresence(int cin)async{
+  Future loadPresence(int cin)async{
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }
+    String dS ;
     Response response = await dio.get('http://192.168.137.1:8000/presence/get/$cin');
     List<DateTime> dr = [];
     bool b = false;
-    dS = response.data['dates'];
+     dS = response.data['dates'];
       if (dS != null) {
       List<String> lS = dS.split(" ");
+      if(lS[lS.length-7]=="O"){
+        b=false;
+      }else{
+        b=true;
+      }
       for (int i=lS.length;i>0;i=i-7) {
-        if(lS[i-7]=='I'){
-          b = true;
-        }else{
-          b = false;
-        }
         dr.add(DateTime(int.parse(lS[i-6]),int.parse(lS[i-5]),int.parse(lS[i-4]),int.parse(lS[i-3]),int.parse(lS[i-2]),int.parse(lS[i-1])));
       }
     }
@@ -89,6 +95,7 @@ class ApiService {
       dio.interceptors.add(CustomInterceptors());
     }
     var cIN=f.cin;
+    String dS ;
     Response response = await dio.get('http://192.168.137.1:8000/presence/get/$cIN');
     List<DateTime> dr = [];
     bool b = false;
@@ -116,10 +123,12 @@ class ApiService {
     }
     Response response = await dio.get('http://192.168.137.1:8000/customers');
     _db = response.data;
-    for (int f = 0; f < db.length; f++) {
+    if(_db.isNotEmpty){
+      for (int f = 0; f < db.length; f++) {
       _db[f]['faceData'] =
           _db[f]['faceData'].replaceAll('[', '').replaceAll(']', '').split(',');
 
+      }
     }
   }
 
@@ -128,23 +137,24 @@ class ApiService {
       dio.interceptors.add(CustomInterceptors());
     }
     Response response = await dio.get('http://192.168.137.1:8000/customers/$cin');
-    User u = new User();
-    u.cin=response.data['CIN'];
-    u.user=response.data['userName'];
-    u.status=response.data['status'];
-    u.password=response.data['password'];
-    u.wage=response.data['wage'];
-    return u;
+   _currUser.cin=response.data['CIN'];
+   _currUser.user=response.data['userName'];
+   _currUser.faceData = response.data['faceData'].replaceAll('[', '').replaceAll(']', '').split(',');
+   _currUser.status=response.data['status'];
+   _currUser.password=response.data['password'];
+   _currUser.wage=response.data['wage'];
+   _currUser.image64=response.data['image'];
+   _currUser.workLocation=response.data['workLocation'];
   }
 
   /// [Name]: name of the new user
   /// [Data]: Face representation for Machine Learning model
-  Future saveData(String user, String password, String modelData, String status,String cin,String wage) async {
+  Future saveData(String user, String password, String modelData, String status,String cin,String wage,String img,String workL) async {
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }
     await dio.post('http://192.168.137.1:8000/customers/add',//192.168.1.16 ip dar 172.0.1.96 ip GST
-        data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status,'CIN':cin,'Wage':wage});
+        data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status,'CIN':cin,'Wage':wage,'image':img,'workLocation':workL});
   }
 }
 

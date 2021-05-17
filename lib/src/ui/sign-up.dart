@@ -94,6 +94,7 @@ class SignUpState extends State<SignUp> {
       await Future.delayed(Duration(milliseconds: 200));
       await _cameraService.takePicture(imagePath);
 
+      _faceNetService.path = imagePath;
 
       setState(() {
         _bottomSheetVisible = true;

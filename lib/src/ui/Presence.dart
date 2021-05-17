@@ -8,13 +8,34 @@ class FichePresence {
   List<DateTime> dates ;
   bool iN ;
   FichePresence(this.cin, this.dates,this.iN);
+  //change fp dates to a list of daterange for the timechart
   List<DateTimeRange> fPRange(){
 
     List<DateTimeRange> data = [];
+    if((this.dates.length % 2) == 0)
+    {
     for (int i =0 ; i<this.dates.length;i=i+2){
       data.add(DateTimeRange(start: this.dates[i+1],end: this.dates[i]));
     }
     return data;
+    }else{
+      for (int i =0 ; i<this.dates.length-1;i=i+2){
+        data.add(DateTimeRange(start: this.dates[i+1],end: this.dates[i]));
+      }
+      return data;
+    }
+
+
+  }
+  double forDuration(List<DateTimeRange> dtr){
+    double duration = 0;
+
+    for (int i=0;i<dtr.length;i++){
+
+      duration = duration + dtr[i].duration.inMinutes;
+
+    }
+    return duration;
   }
 }
 
@@ -31,7 +52,7 @@ class Presence extends StatelessWidget{
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Container(
+          child: fp.forDuration(dTR)<1?Text("Look like you just started working here ,you need to do at least a day of work to check your presence"): Container(
                   child: Column(
                     children:[TimeChart(
                       data: dTR,
@@ -41,7 +62,7 @@ class Presence extends StatelessWidget{
                         viewMode: ViewMode.weekly,
                         chartType: ChartType.amount,
                     ),
-                    Text(dTR[3].duration.inHours.toString())]
+                    Text(fp.forDuration(dTR).toString())]
                   ),
           ),
         ),

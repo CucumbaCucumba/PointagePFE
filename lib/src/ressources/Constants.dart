@@ -4,7 +4,7 @@ class Const {
   static InputDecoration textFieldDeco(String T) {
    return InputDecoration(
       filled: true,
-      fillColor: Color.fromARGB(25, 255, 255, 255),
+      fillColor: Color.fromARGB(50, 255, 255, 255),
       hintText: T,
       hintStyle: TextStyle(
         color: Colors.white70,

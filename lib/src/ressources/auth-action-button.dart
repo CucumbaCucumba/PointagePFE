@@ -1,18 +1,19 @@
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/profile.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/material.dart';
 
 
 class AuthActionButton extends StatefulWidget {
-  AuthActionButton(this._initializeControllerFuture, {@required this.onPressed, @required this.isLogin});
+  AuthActionButton(this._initializeControllerFuture, {@required this.onPressed, @required this.isLogin, @required this.user});
   final Future _initializeControllerFuture;
   final Function onPressed;
   final bool isLogin;
+  final User user;
   @override
-  _AuthActionButtonState createState() => _AuthActionButtonState();
+  _AuthActionButtonState createState() => _AuthActionButtonState(user);
 }
 
 class _AuthActionButtonState extends State<AuthActionButton> {
@@ -24,7 +25,10 @@ class _AuthActionButtonState extends State<AuthActionButton> {
   final TextEditingController _passwordTextEditingController = TextEditingController(text: '');
   final TextEditingController _statusTextEditingController = TextEditingController(text: '');
   User predictedUser;
+  User user;
   String V;
+
+  _AuthActionButtonState(this.user);
 
 
   Future _signIn(context) async {
@@ -44,9 +48,9 @@ class _AuthActionButtonState extends State<AuthActionButton> {
     }
   }
 
-  int _predictUser() {
-    int userAndPass = _faceNetService.predict();
-    return userAndPass;
+  bool _predictUser() {
+    bool userBoll = _faceNetService.predict(user);
+    return userBoll;
   }
 
   @override
@@ -64,9 +68,9 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
           if (faceDetected) {
             if (widget.isLogin) {
-              var userAndPass = _predictUser();
-              if (userAndPass != null) {
-                this.predictedUser = User.fromDB(_dataBaseService.db[userAndPass]);
+              var userBool = _predictUser();
+              if (userBool) {
+                this.predictedUser = user;
               }
             }
             Scaffold.of(context).showBottomSheet((context) => signSheet(context));

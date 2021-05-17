@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tflite;
@@ -19,6 +20,8 @@ class FaceNetService {
   ApiService _dataBaseService = ApiService();
 
   tflite.Interpreter _interpreter;
+  String path;
+  int cin;
 
   double threshold = 1;
 
@@ -63,9 +66,9 @@ class FaceNetService {
   }
 
   /// takes the predicted data previously saved and do inference
-  int predict() {
+  bool predict(User user) {
     /// search closer user prediction if exists
-    return _searchResult(this._predictedData);
+    return _searchResult(this._predictedData,user);
   }
 
   /// _preProess: crops the image to be more easy
@@ -142,33 +145,22 @@ class FaceNetService {
 
   /// searchs the result in the DDBB (this function should be performed by Backend)
   /// [predictedData]: Array that represents the face by the MobileFaceNet model
-  int _searchResult(List predictedData) {
-    /// loads 'database' 🙄
-    List data = _dataBaseService.db;
-    print('data:$data');
-    print(data.length);
-    /// if no faces saved
-    if (data.length == 0) {
-      print('damn son');
-      return null;}
+  bool _searchResult(List predictedData,User user) {
+
     double minDist = 999;
     double currDist = 0.0;
-    var predRes;
-    /// search the closest result 👓
-    for (int i = 0 ; i < data.length;i++ ) {
-      print('oy');
-      print(data[i]);
-      currDist = _euclideanDistance(data[i]['faceData'], predictedData);
-      print('CURRENT DISTTTTTTTT +==>> $currDist');
-      if (currDist <= threshold && currDist < minDist) {
-        minDist = currDist;
-        predRes = i;
-        currDist = 0 ;
+    var predRes =false;
+
+    print(user.faceData.toString());
+    currDist = _euclideanDistance(user.faceData, predictedData);
+    print('CURRENT DISTTTTTTTT +==>> $currDist');
+    if (currDist <= threshold) {
+      predRes = true;
       }
-    }
-    print('res:$predRes');
     return predRes;
-  }
+    }
+
+
 
   /// Adds the power of the difference between each point
   /// then computes the sqrt of the result 📐

@@ -53,11 +53,12 @@ class ChangePass extends StatelessWidget {
                   TextButton(
                     onPressed:()async{
                       print(_oldPassTextEditingController.text);
-                      if(_oldPassTextEditingController.text==u.password){
+                      if((_newPassTextEditingController.text.isEmpty)||(_oldPassTextEditingController.text==u.password)){
                        bool b = _newPassTextEditingController.text == _cnewPassTextEditingController.text;
                         if(b){
-                            await ApiService().changeUserInfo(_newPassTextEditingController.text,'',null,u.cin );
+                            await ApiService().changeUserInfo(_newPassTextEditingController.text,_userNamePassTextEditingController.text,null,u.cin );
                             u.password=_newPassTextEditingController.text;
+                            u.user=_userNamePassTextEditingController.text;
                             Navigator.pop(context,u);
                             }
                       }

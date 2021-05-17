@@ -24,6 +24,7 @@ class Check extends StatefulWidget {
   final User user;
 }
 
+
 class Checkk extends State<Check> {
 
   Checkk(this.fp, this.user);
@@ -31,12 +32,31 @@ class Checkk extends State<Check> {
   FichePresence fp ;
   User user;
   DateTime lD;
+  String dat="";
+
+  @override
+  void initState(){
+    super.initState();
+    if(fp.dates.isNotEmpty) {
+      lD = fp.dates.first;
+    }
+    if(lD==null){
+      dat = " ";
+    }else{
+      if(fp.iN){
+        dat = "You're checked in at $lD";
+      }else{
+        dat = "You're checked out at $lD";
+      }
+    }
+    setState(() {
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    if(fp.dates.isNotEmpty) {
-      lD = fp.dates.last;
-    }
     return Scaffold(
       body:SafeArea(
         child: Center(
@@ -74,7 +94,13 @@ class Checkk extends State<Check> {
                         if(fp.iN == false){
                           fp=await db.savePresence(fp,user.cin);
                           Navigator.pop(context,fp);
-                        }else{
+                        }else
+                          if(DateTime.now().minute == fp.dates[0].minute){
+                          print('you just checked in ,you need to wait at least a minute');
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("you are already checked in"),
+                            ));
                           print('user already checked in');
                         }
                       },
@@ -91,10 +117,13 @@ class Checkk extends State<Check> {
                                   ),
                                   onPressed: ()async{
                                     ApiService db = new ApiService();
-                                    if(fp.iN == true){
+                                    if(fp.iN ){
                                       fp=await db.savePresence(fp,user.cin);
                                       Navigator.pop(context,fp);
                                     }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        content: Text("you did not check in"),
+                                      ));
                                       print('user did not check in');
                                     }
                                   },
@@ -104,7 +133,8 @@ class Checkk extends State<Check> {
                                     fontStyle: FontStyle.italic,)))
                     ]),
 
-                 fp.iN?Text('You''re Checked In at $lD'):Text('You''re checked out at $lD')
+                  Text(dat)
+                  //lD==null?Container():Text(fp.iN?"You're checked in at $lD":"You're checked out at $lD")
                 ])
             )
           )

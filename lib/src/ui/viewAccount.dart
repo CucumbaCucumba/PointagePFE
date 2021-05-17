@@ -20,6 +20,13 @@ class ViewAccount extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+
+                width: 200,
+                height: 200,
+                child: Image(image: Image.file(u.decodedImage).image,),
+
+            ),
             Text(
               'User :' + u.user,
               style: TextStyle(fontSize: 20),
@@ -48,7 +55,7 @@ class ViewAccount extends StatelessWidget {
 
             );
                   Navigator.pop(context,u);
-            }, child: Text('Change Password'),),
+            }, child: Text('Change User Info'),),
 
           ],
         ),
