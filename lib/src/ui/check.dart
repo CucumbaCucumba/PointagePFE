@@ -66,19 +66,24 @@ class Checkk extends State<Check> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  DigitalClock(
+                  Hero(
+                    tag: 'clock',
+                    child: DigitalClock(
                       digitAnimationStyle: Curves.elasticOut,
                       is24HourTimeFormat: false,
                       areaDecoration: BoxDecoration(
                         color: Colors.transparent,
                       ),
-                hourMinuteDigitTextStyle: TextStyle(
-                color: Colors.blueGrey,
-                fontSize: 50,
-              ),
-              amPmDigitTextStyle: TextStyle(
-                  color: Colors.blueGrey, fontWeight: FontWeight.bold),
-            ),
+                      hourMinuteDigitDecoration:BoxDecoration(color: Colors.transparent),
+                      hourMinuteDigitTextStyle: TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 50,
+                      ),
+                      secondDigitDecoration: BoxDecoration(color: Colors.transparent),
+                      amPmDigitTextStyle: TextStyle(
+                          color: Colors.blueGrey, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

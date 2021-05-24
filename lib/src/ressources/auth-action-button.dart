@@ -3,15 +3,18 @@ import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'package:FaceNetAuthentication/src/ui/adminProfile.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 
 class AuthActionButton extends StatefulWidget {
-  AuthActionButton(this._initializeControllerFuture, {@required this.onPressed, @required this.isLogin, @required this.user});
+  AuthActionButton(this._initializeControllerFuture, {@required this.image,@required this.onPressed, @required this.isLogin, @required this.user});
   final Future _initializeControllerFuture;
   final Function onPressed;
   final bool isLogin;
   final User user;
+  final CameraImage image;
   @override
   _AuthActionButtonState createState() => _AuthActionButtonState(user);
 }
@@ -35,6 +38,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
     String password = _passwordTextEditingController.text;
 
     if (this.predictedUser.password == password) {
+      if (this.predictedUser.status=='user'){
       FichePresence fPresence = await _dataBaseService.loadPresence(this.predictedUser.cin);
       Navigator.push(
           context,
@@ -43,14 +47,23 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                     username: this.predictedUser,
                     fp: fPresence,
                   )));
+      }else{
+
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> AdminProfile(
+          username: this.predictedUser,
+
+        )));
+
+      }
     } else {
       print(" WRONG PASSWORD!");
     }
   }
 
-  bool _predictUser() {
-    bool userBoll = _faceNetService.predict(user);
-    return userBoll;
+  Future<bool> _predictUser() async {
+      await delay(2);
+      bool userBoll = _faceNetService.predict(user);
+      return userBoll;
   }
 
   @override
@@ -68,7 +81,8 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
           if (faceDetected) {
             if (widget.isLogin) {
-              var userBool = _predictUser();
+
+              var userBool = await _predictUser();
               if (userBool) {
                 this.predictedUser = user;
               }
@@ -159,6 +173,10 @@ class _AuthActionButtonState extends State<AuthActionButton> {
         ),]
       ),
     );
+  }
+
+  delay(int i) {
+    Future.delayed(Duration(seconds: i));
   }
 
  // @override

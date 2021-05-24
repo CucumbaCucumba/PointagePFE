@@ -1,3 +1,4 @@
+import 'ViewAccountAdmin.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/viewAccount.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/check.dart';
@@ -8,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 
 class AdminProfile extends StatelessWidget {
-  AdminProfile({Key key, @required this.username, @required this.fp}) : super(key: key);
+  AdminProfile({Key key, @required this.username}) : super(key: key);
 
-  FichePresence fp;
+
   User username;
   ApiService API = new ApiService();
   @override
@@ -40,28 +41,11 @@ class AdminProfile extends StatelessWidget {
                   ),
                   RaisedButton(
                     child: Text('Presence'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Presence(fp)
-                        ),
-                      );
-                    },
+
                   ),
                   RaisedButton(
-                      child: Text('IN/OUT'),
-                      onPressed: () async{
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Check(fp: fp,user: username)
-                          ),
-                        );
+                      child: Text('Users Accounts'),
 
-                        fp = await API.loadPresence(username.cin);
-
-                      }
 
                   ),
                   RaisedButton(
@@ -71,7 +55,7 @@ class AdminProfile extends StatelessWidget {
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ViewAccount(username)
+                              builder: (context) => ViewAccountAdmin(username)
                           ),
                         );
                       }

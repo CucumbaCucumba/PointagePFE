@@ -68,6 +68,7 @@ class FaceNetService {
   /// takes the predicted data previously saved and do inference
   bool predict(User user) {
     /// search closer user prediction if exists
+
     return _searchResult(this._predictedData,user);
   }
 

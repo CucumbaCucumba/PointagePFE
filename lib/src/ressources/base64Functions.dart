@@ -13,4 +13,12 @@ class Base64Fun{
     return file;
 
   }
+   tempDirectory2(path,image64)  {
+     DateTime s = DateTime.now();
+     File file = new File(path+'$s');
+     var decodedBytes = base64Decode(image64);
+     file.writeAsBytesSync(decodedBytes);
+     return file;
+
+   }
 }

@@ -73,7 +73,7 @@ class SignUpPState extends State<SignUpPage>{
     try{
       test = await _dataBaseService.loadUser(int.parse(cin));
     }catch(e){
-      print(e);
+      print('User exists');
     }
     if(test != null){
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -109,6 +109,11 @@ class SignUpPState extends State<SignUpPage>{
               obscureText: true,
               ),
               TextField(
+                onChanged: (String value){
+                  if(value.length==9){
+                    _cINTextEditingController.text=_cINTextEditingController.text.substring(0, _cINTextEditingController.text.length - 1);
+                  }
+                },
                 controller:_cINTextEditingController,
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[

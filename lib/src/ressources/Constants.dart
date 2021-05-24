@@ -1,4 +1,14 @@
+import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/material.dart';
+
+class BoxedReturns{
+   bool c = false;
+   User user ;
+
+  BoxedReturns(this.c, this.user);
+
+}
+
 
 class Const {
   static InputDecoration textFieldDeco(String T) {

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
+import 'package:FaceNetAuthentication/src/ui/test.dart';
+
 import 'sign-in.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/sign-up.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
@@ -63,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // start the services
     await _faceNetService.loadModel();
-    await _dataBaseService.loadDB();
+    //await _dataBaseService.loadDB();
     _mlVisionService.initialize();
     new Future.delayed(Duration(seconds: 4));
     _setLoading(false);
@@ -115,29 +117,29 @@ class _MyHomePageState extends State<MyHomePage> {
                     RaisedButton(
                       child: Text('Sign In'),
                       onPressed: () async{
+                        Response response;
                         if(_cINTextEditingController.text.length!=8){
                           ScaffoldMessenger.of(context).showSnackBar(twix);
                         }else{
                           var cin = int.parse(_cINTextEditingController.text);
-                          try{
-                             await _dataBaseService.loadUser(cin);}
-                             catch(e){
-                              print(e);
-                             }
-                          Directory tempDir = await getTemporaryDirectory();
-                      //    Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //             builder: (BuildContext context) => SignIn(cameraDescription1: cameraDescriptionF,),
-                      //           ),
-                      //        );
 
+                          response = await _dataBaseService.loadUser(cin);
+
+                          Directory tempDir = await getTemporaryDirectory();
+
+                          if(response.statusCode == 200){
                          Navigator.push(
                          context,
                          MaterialPageRoute(
                            builder: (BuildContext context) => IdConfirm(path: tempDir.path,u: _dataBaseService.currUser,),
                          ),
-                           );
+                           );}
+                          else
+                             {
+                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                 content: Text("wrong CIN"),
+                               ));
+                          }
                         }
                       },
                     ),
@@ -154,6 +156,20 @@ class _MyHomePageState extends State<MyHomePage> {
                        );
                      },
                    ),
+                    RaisedButton(
+                      child: Text('Delete'),
+                      onPressed: () async{
+                        await _dataBaseService.deleteUser(_cINTextEditingController.text);
+                      },
+                    ),
+                    RaisedButton(
+                      child: Text('test'),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (BuildContext context) => YellowBird(),
+                        ),);
+                      },
+                    ),
 
                     TextButton(onPressed: ()async{
                       Dio dio = new Dio();

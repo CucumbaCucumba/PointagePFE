@@ -19,7 +19,7 @@ class FichePresence {
     }
     return data;
     }else{
-      for (int i =0 ; i<this.dates.length-1;i=i+2){
+      for (int i =1 ; i<this.dates.length;i=i+2){
         data.add(DateTimeRange(start: this.dates[i+1],end: this.dates[i]));
       }
       return data;

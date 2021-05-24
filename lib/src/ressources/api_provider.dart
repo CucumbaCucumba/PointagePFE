@@ -57,11 +57,11 @@ class ApiService {
     return  loadPresenceDate(fp);
   }
 
-  changeUserInfo(String pass,String userName,int modifiedcin,int truecin)async{
+  changeUserInfo(String image64,String pass,String userName,int modifiedcin,int truecin,)async{
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }
-    Response response = await dio.put('http://192.168.137.1:8000/customers/$truecin',data: {'password' : pass, 'userName': userName, 'CIN':modifiedcin });
+    Response response = await dio.put('http://192.168.137.1:8000/customers/$truecin',data: {'password' : pass, 'userName': userName, 'CIN':modifiedcin ,'image': image64});
 
   }
 
@@ -133,10 +133,12 @@ class ApiService {
   }
 
   Future loadUser(int cin) async {
+    Response response;
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }
-    Response response = await dio.get('http://192.168.137.1:8000/customers/$cin');
+
+    response = await dio.get('http://192.168.137.1:8000/customers/$cin');
    _currUser.cin=response.data['CIN'];
    _currUser.user=response.data['userName'];
    _currUser.faceData = response.data['faceData'].replaceAll('[', '').replaceAll(']', '').split(',');
@@ -145,7 +147,8 @@ class ApiService {
    _currUser.wage=response.data['wage'];
    _currUser.image64=response.data['image'];
    _currUser.workLocation=response.data['workLocation'];
-  }
+   return response;}
+
 
   /// [Name]: name of the new user
   /// [Data]: Face representation for Machine Learning model
@@ -155,6 +158,13 @@ class ApiService {
     }
     await dio.post('http://192.168.137.1:8000/customers/add',//192.168.1.16 ip dar 172.0.1.96 ip GST
         data: {'userName': user, 'password': password, 'faceData': modelData, 'status': status,'CIN':cin,'Wage':wage,'image':img,'workLocation':workL});
+  }
+  
+  Future deleteUser(String cin) async {
+    if (dio.interceptors.isEmpty) {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    await dio.delete('http://192.168.137.1:8000/customers/$cin');
   }
 }
 
