@@ -17,7 +17,5 @@ class User {
   User({@required this.user,@required this.password,@required this.faceData,@required this.status,@required this.cin,@required this.wage,@required this.workLocation,@required this.image64});
 
 
-  static User fromDB(var dbuser) {
-    return new User(user: dbuser['userName'], password: dbuser['password'],status:dbuser['status'],cin: dbuser['CIN'],image64: dbuser['image'],workLocation: dbuser['workLocation'],wage: dbuser['wage'] );
-  }
+
 }

@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'file:///E:/PointagePFE/lib/src/ui/sign_up_param.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/FacePainter.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/camera.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/ml_vision_service.dart';
-import 'package:FaceNetAuthentication/src/ui/sign_up_paramA.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
@@ -207,7 +207,7 @@ class SignUpState extends State<SignUp> {
             await Navigator.push
               (context, MaterialPageRoute
               (builder: (context) =>
-                SignUpPageA(_initializeControllerFuture, onPressed: onShot)
+                SignUpPage(_initializeControllerFuture, onPressed: onShot)
             )
             );
             Navigator.pop(context);

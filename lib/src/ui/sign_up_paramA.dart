@@ -9,11 +9,10 @@ import 'dart:convert';
 
 
 import '../ressources/api_provider.dart';
-import 'home.dart';
 
-class SignUpPage extends StatefulWidget{
+class SignUpPageA extends StatefulWidget{
 
-  SignUpPage(this._initializeControllerFuture,{@required this.onPressed });
+  SignUpPageA(this._initializeControllerFuture,{@required this.onPressed });
 
   final Future _initializeControllerFuture;
   final Function onPressed;
@@ -25,7 +24,7 @@ class SignUpPage extends StatefulWidget{
 
 }
 
-class SignUpPState extends State<SignUpPage>{
+class SignUpPState extends State<SignUpPageA>{
 
   final FaceNetService _faceNetService = FaceNetService();
   final ApiService _dataBaseService = ApiService();
@@ -36,7 +35,7 @@ class SignUpPState extends State<SignUpPage>{
   final TextEditingController _wageTextEditingController = TextEditingController(text: '');
   final TextEditingController _workLocationTextEditingController = TextEditingController(text: '');
   final snackBar = SnackBar(content: Text('CIN already exists !!!'));
-  String V = 'admin';
+  String V;
   Color c = Colors.white.withOpacity(0.0) ;
   final _amountValidator = RegExInputFormatter.withRegex('^\$|^(0|([1-9][0-9]{0,}))(\\.[0-9]{0,})?\$');
 
@@ -87,7 +86,6 @@ class SignUpPState extends State<SignUpPage>{
 
     /// resets the face stored in the face net sevice
     this._faceNetService.setPredictedData(null);
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
         }
   }
 
@@ -133,12 +131,38 @@ class SignUpPState extends State<SignUpPage>{
                   controller: _workLocationTextEditingController,
                   decoration: InputDecoration(labelText: "Work Location *")),
               SizedBox(height: 20,),
+              Text('Role :'),
+              ListTile(
+                title: const Text('user '),
+                leading: Radio(
+                  value: 'user',
+                  groupValue: V,
+                  onChanged: (String value) {
+                    setState(() {
+                      V = value;
+                    });
 
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('admin'),
+                leading: Radio(
+                  value: 'admin',
+                  groupValue: V,
+                  onChanged: (String value) {
+                    setState(() {
+                      V = value;
+                    });
+
+                  },
+                ),
+              ),
               RaisedButton(
                 child: Text('Sign Up!'),
                 onPressed: () async {
                   await _signUp(context);
-
+                  Navigator.pop(context);
                 },
               )
             ],

@@ -5,12 +5,9 @@ import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
 import 'package:FaceNetAuthentication/src/ui/test.dart';
 
-import 'sign-in.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/sign-up.dart';
-import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/ml_vision_service.dart';
-import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -172,8 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
 
                     TextButton(onPressed: ()async{
-                      Dio dio = new Dio();
-                      await _dataBaseService.loadUser(12845017);
+                      await _dataBaseService.loadUser(12845014);
                       int cin = _dataBaseService.currUser.cin;
                       FichePresence fPresence = await _dataBaseService.loadPresence(cin);
                       Navigator.push(

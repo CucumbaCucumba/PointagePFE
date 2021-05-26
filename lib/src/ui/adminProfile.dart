@@ -1,9 +1,9 @@
+import 'package:FaceNetAuthentication/src/ui/ViewUsers.dart';
+import 'package:FaceNetAuthentication/src/ui/sign-up.dart';
+import 'package:camera/camera.dart';
+
 import 'ViewAccountAdmin.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/viewAccount.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/check.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
-import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
@@ -12,10 +12,27 @@ class AdminProfile extends StatelessWidget {
   AdminProfile({Key key, @required this.username}) : super(key: key);
 
 
+  CameraDescription cameraDescriptionF;
+  CameraDescription cameraDescriptionB;
+
+  Future startUp() async {
+    List<CameraDescription> cameras = await availableCameras();
+
+    /// takes the front camera
+    cameraDescriptionF = cameras.firstWhere(
+          (CameraDescription camera) => camera.lensDirection == CameraLensDirection.front,
+    );
+    cameraDescriptionB = cameras.firstWhere(
+          (CameraDescription camera) => camera.lensDirection == CameraLensDirection.back,
+    );
+  }
+
   User username;
   ApiService API = new ApiService();
   @override
   Widget build(BuildContext context) {
+    startUp();
+    Future.delayed(Duration(seconds: 2));
     return Scaffold(
         appBar: AppBar(
           title: Text('Welcome back, ' + username.user + '!'),
@@ -40,13 +57,21 @@ class AdminProfile extends StatelessWidget {
                     },
                   ),
                   RaisedButton(
-                    child: Text('Presence'),
+                    child: Text('Create an Account'),
+                    onPressed: (){
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context)=> SignUp(cameraDescription: cameraDescriptionF))
+                      );
+                    },
 
                   ),
                   RaisedButton(
                       child: Text('Users Accounts'),
-
-
+                      onPressed: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context)=> ViewUsers())
+                        );
+                      },
                   ),
                   RaisedButton(
                       child: Text('Account settings'

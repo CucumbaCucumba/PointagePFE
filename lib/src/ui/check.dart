@@ -1,5 +1,4 @@
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
-import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 import 'package:flutter/cupertino.dart';

@@ -7,7 +7,7 @@ import 'file:///E:/PointagePFE/lib/src/ressources/camera.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/ml_vision_service.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
-import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
+import 'package:camera/camera.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
@@ -108,8 +108,9 @@ class SignInState extends State<SignIn> {
 
               if (_saving){
 
-                 _saving = false;
+
                  _faceNetService.setCurrentPrediction(image, faceDetected,);
+                 _saving = false;
               }
 
             } else {

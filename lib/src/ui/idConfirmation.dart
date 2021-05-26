@@ -1,16 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:FaceNetAuthentication/src/models/User.dart';
-import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/ressources/base64Functions.dart';
 import 'package:FaceNetAuthentication/src/ressources/ml_vision_service.dart';
 import 'package:FaceNetAuthentication/src/ui/sign-in.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 // ignore: must_be_immutable
 class IdConfirm extends StatelessWidget {

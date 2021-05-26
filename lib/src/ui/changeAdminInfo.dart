@@ -1,5 +1,4 @@
 
-import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:FaceNetAuthentication/src/ressources/Constants.dart';
 import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
@@ -8,7 +7,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'home.dart';
 
 class ChangeAdmin extends StatefulWidget {
 

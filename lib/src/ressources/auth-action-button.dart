@@ -61,7 +61,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
   }
 
   Future<bool> _predictUser() async {
-      await delay(2);
+
       bool userBoll = _faceNetService.predict(user);
       return userBoll;
   }
@@ -81,7 +81,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
           if (faceDetected) {
             if (widget.isLogin) {
-
+              new Future.delayed(Duration(seconds: 4));
               var userBool = await _predictUser();
               if (userBool) {
                 this.predictedUser = user;

@@ -1,5 +1,4 @@
 
-import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources//textFormat.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
@@ -7,15 +6,11 @@ import 'package:FaceNetAuthentication/src/ressources/Constants.dart';
 import 'package:FaceNetAuthentication/src/ressources/base64Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
 
 
 import '../ressources/api_provider.dart';
-import 'home.dart';
 
 class ImageConfirm extends StatefulWidget{
 

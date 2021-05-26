@@ -37,6 +37,12 @@ dependencies:
   dio: ^4.0.0
   time_chart: ^0.0.8
   slide_digital_clock: ^1.0.0
+  rxdart: ^0.18.0
+  http: ^0.13.3
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
+
+
 
 dev_dependencies:
   flutter_test:

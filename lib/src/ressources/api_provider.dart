@@ -1,9 +1,11 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
-import 'file:///E:/PointagePFE/lib/src/ressources/auth-action-button.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
-import 'package:dio/dio.dart';
+import 'package:FaceNetAuthentication/src/models/users.dart';
+import 'package:dio/dio.dart' ;
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 BaseOptions options = BaseOptions(receiveTimeout: 50000, connectTimeout: 50000);
 
@@ -28,6 +30,7 @@ class ApiService {
   User _currUser = new User();
   User get currUser => this._currUser;
   var dio = Dio(options);
+  http.Client client = new http.Client();
 
   /// loads from database
   Future<FichePresence> savePresence(FichePresence fp, int cin)async{
@@ -117,19 +120,26 @@ class ApiService {
   }
 
 
-  Future loadDB() async {
+  Future<Users> loadDB() async {
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }
-    Response response = await dio.get('http://192.168.137.1:8000/customers');
-    _db = response.data;
-    if(_db.isNotEmpty){
-      for (int f = 0; f < db.length; f++) {
-      _db[f]['faceData'] =
-          _db[f]['faceData'].replaceAll('[', '').replaceAll(']', '').split(',');
-
-      }
+     http.Response response = await client.get(Uri.parse("http://192.168.137.1:8000/customers"));
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON
+      return Users.fromJson(json.decode(response.body));
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
     }
+  // _db = response.data;
+  // if(_db.isNotEmpty){
+  //   for (int f = 0; f < db.length; f++) {
+  //   _db[f]['faceData'] =
+  //       _db[f]['faceData'].replaceAll('[', '').replaceAll(']', '').split(',');
+
+  //   }
+  // }
   }
 
   Future loadUser(int cin) async {
@@ -147,6 +157,7 @@ class ApiService {
    _currUser.wage=response.data['wage'];
    _currUser.image64=response.data['image'];
    _currUser.workLocation=response.data['workLocation'];
+   
    return response;}
 
 
