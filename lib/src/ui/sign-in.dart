@@ -143,6 +143,7 @@ class SignInState extends State<SignIn> {
     } else {
       imagePath = join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
 
+      //why
       _saving = true;
 
       await Future.delayed(Duration(milliseconds: 500));
