@@ -1,9 +1,13 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:FaceNetAuthentication/src/ui/adminProfile.dart';
+import 'package:FaceNetAuthentication/src/ui/home.dart';
+import 'package:FaceNetAuthentication/src/ui/idConfirmation.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -113,10 +117,39 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                   )
                 : widget.isLogin
                     ? Container(
-                        child: Text(
-                        'User not found 😞',
-                        style: TextStyle(fontSize: 20),
-                      ))
+                        child: Column(
+                          children: [
+                            Text(
+                            'User not found 😞',
+                            style: TextStyle(fontSize: 20),
+                      ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Row(
+                              children: [
+                                RaisedButton(
+                                    child: Text('Retry'),
+                                    onPressed: ()async{
+                                      Directory tempDir = await getTemporaryDirectory();
+                                  Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) =>IdConfirm(path:tempDir.path,u: user,)
+                                  )
+                                  );
+                                }),
+                                SizedBox(width: 50,),
+                                RaisedButton(
+                                    child:Text('Cancel'),
+                                    onPressed: (){
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (BuildContext context) =>MyHomePage()
+                                          ));
+                                    }
+                                )
+                              ],
+                            )
+                          ],
+                        ))
                     : Container(),
             !widget.isLogin
                 ? TextField(

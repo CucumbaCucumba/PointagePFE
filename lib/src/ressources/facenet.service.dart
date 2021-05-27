@@ -153,7 +153,10 @@ class FaceNetService {
     var predRes =false;
 
     print(user.faceData.toString());
+    if(_predictedData!=null)
     currDist = _euclideanDistance(user.faceData, predictedData);
+    else
+      currDist = 1.00001;
     print('CURRENT DISTTTTTTTT +==>> $currDist');
     if (currDist <= threshold) {
       predRes = true;

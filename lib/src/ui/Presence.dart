@@ -32,7 +32,7 @@ class FichePresence {
 
     for (int i=0;i<dtr.length;i++){
 
-      duration = duration + dtr[i].duration.inMinutes;
+      duration = duration + dtr[i].duration.inHours;
 
     }
     return duration;
