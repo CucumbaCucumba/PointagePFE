@@ -93,7 +93,8 @@ class ApiService {
 
   }
 
-  Future<FichePresence> loadPresenceDate(FichePresence f )async{
+  Future<FichePresence>
+  loadPresenceDate(FichePresence f )async{
     if (dio.interceptors.isEmpty) {
       dio.interceptors.add(CustomInterceptors());
     }

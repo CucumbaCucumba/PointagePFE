@@ -1,19 +1,22 @@
 import 'file:///E:/PointagePFE/lib/src/ui/changeUserInfo.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'package:FaceNetAuthentication/src/ui/Presence.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class AdminViewAccount extends StatelessWidget {
-  AdminViewAccount(this.u,this.fp);
+class AdminViewAdminAccount extends StatelessWidget {
+  AdminViewAdminAccount(this.u);
 
-  FichePresence fp;
+
   User u;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(u.status),
+      ),
         body: Padding(
           padding: const EdgeInsets.all(30),
           child: Center(
@@ -46,17 +49,7 @@ class AdminViewAccount extends StatelessWidget {
                   'Status :' + u.status,
                   style: TextStyle(fontSize: 20),
                 ),
-                TextButton(
-                  onPressed: ()async{
-                    u = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChangePass(u)
-                      ),
 
-                    );
-                    Navigator.pop(context,u);
-                  }, child: Text('Change User Info'),),
 
               ],
             ),

@@ -1,12 +1,18 @@
 import 'package:FaceNetAuthentication/src/blocs/UsersBloc.dart';
 import 'package:FaceNetAuthentication/src/models/users.dart';
+import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/ressources/base64Functions.dart';
+import 'package:FaceNetAuthentication/src/ui/AVAdminAccount.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'package:flutter/material.dart';
+import 'package:FaceNetAuthentication/src/ui/ViewUserAccount.dart';
 
 
 class ViewUsers extends StatelessWidget {
   
   Base64Fun fun = Base64Fun();
+  ApiService api = new ApiService();
   
   @override
   Widget build(BuildContext context) {
@@ -42,10 +48,21 @@ class ViewUsers extends StatelessWidget {
                child: Padding(
                  padding: const EdgeInsets.all(8.0),
                  child: Container(
+
                     decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      color: snapshot.data.result[index].status=='admin'?Colors.lightGreen:Colors.blue,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(color: Colors.blueGrey)
                     ),
+
                     height: 50,
                     child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -73,13 +90,25 @@ class ViewUsers extends StatelessWidget {
                         SizedBox(height: 40),
                         RaisedButton(
                           child: Text('View Account'),
-                          onPressed: (){
+                          onPressed: () async {
+
+                            if(snapshot.data.result[index].status == 'user'){
+                              FichePresence fp = await api.loadPresence(snapshot.data.result[index].cin);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
+                                    builder: (BuildContext context) =>AdminViewAccount(User().fromSnap(snapshot.data.result, index),fp)
                                     ));
-                          },
+                              }else{
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>AdminViewAdminAccount(User().fromSnap(snapshot.data.result, index))
+                                  ));
+
+                            }
+                            },
                         )
                       ],
                     ),

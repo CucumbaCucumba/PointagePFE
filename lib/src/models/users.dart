@@ -34,24 +34,17 @@ class Users {
 }
 
 class Result {
-  String _userName;
-  String _password;
-  String _faceData;
-  String _status;
-  int _cin;
-  int _wage;
-  String _image;
-  String _workLocation;
+  String userName;
+  String password;
+  String faceData;
+  String status;
+  int cin;
+  int wage;
+  String image;
+  String workLocation;
   File decodedImage;
 
-  String get userName => _userName;
-  String get password => _password;
-  String get faceData => _faceData;
-  String get status => _status;
-  int get cin => _cin;
-  int get wage => _wage;
-  String get image => _image;
-  String get workLocation => _workLocation;
+
 
   Result({
       String userName, 
@@ -62,38 +55,39 @@ class Result {
       int wage, 
       String image, 
       String workLocation}){
-    _userName = userName;
-    _password = password;
-    _faceData = faceData;
-    _status = status;
-    _cin = cin;
-    _wage = wage;
-    _image = image;
-    _workLocation = workLocation;
+    userName = userName;
+    password = password;
+    faceData = faceData;
+    status = status;
+    cin = cin;
+    wage = wage;
+    image = image;
+    workLocation = workLocation;
 }
 
+
   Result.fromJson(dynamic json,String path) {
-    _userName = json["userName"];
-    _password = json["password"];
-    _faceData = json["faceData"];
-    _status = json["status"];
-    _cin = json["CIN"];
-    _wage = json["Wage"];
-    _image = json["image"];
-    _workLocation = json["workLocation"];
-    decodedImage = Base64Fun().tempDirectory2(path, _image);
+    userName = json["userName"];
+    password = json["password"];
+    faceData = json["faceData"];
+    status = json["status"];
+    cin = json["CIN"];
+    wage = json["Wage"];
+    image = json["image"];
+    workLocation = json["workLocation"];
+    decodedImage = Base64Fun().tempDirectory2(path, image);
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["userName"] = _userName;
-    map["password"] = _password;
-    map["faceData"] = _faceData;
-    map["status"] = _status;
-    map["CIN"] = _cin;
-    map["Wage"] = _wage;
-    map["image"] = _image;
-    map["workLocation"] = _workLocation;
+    map["userName"] = userName;
+    map["password"] = password;
+    map["faceData"] = faceData;
+    map["status"] = status;
+    map["CIN"] = cin;
+    map["Wage"] = wage;
+    map["image"] = image;
+    map["workLocation"] = workLocation;
     return map;
   }
 
