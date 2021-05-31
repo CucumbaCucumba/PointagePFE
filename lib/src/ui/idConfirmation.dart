@@ -7,6 +7,7 @@ import 'package:FaceNetAuthentication/src/ui/sign-in.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 // ignore: must_be_immutable
 class IdConfirm extends StatelessWidget {
@@ -21,6 +22,7 @@ class IdConfirm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EasyLoading.showSuccess('Success');
     MLVisionService _mlVisionService = MLVisionService();
     _mlVisionService.initialize();
 

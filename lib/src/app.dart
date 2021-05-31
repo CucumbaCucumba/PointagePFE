@@ -1,6 +1,7 @@
 import 'file:///E:/PointagePFE/lib/src/ui/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
+      builder: EasyLoading.init(),
     );
   }
 }

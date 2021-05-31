@@ -9,6 +9,18 @@ class FichePresence {
   bool iN ;
   FichePresence(this.cin, this.dates,this.iN);
   //change fp dates to a list of daterange for the timechart
+
+  double forDurationMin(List<DateTimeRange> dtr){
+    double duration = 0;
+
+    for (int i=0;i<dtr.length;i++){
+
+      duration = duration + dtr[i].duration.inMinutes;
+
+    }
+    return duration;
+  }
+
   List<DateTimeRange> fPRange(){
 
     List<DateTimeRange> data = [];
@@ -27,7 +39,19 @@ class FichePresence {
 
 
   }
-  double forDuration(List<DateTimeRange> dtr){
+
+  // ignore: non_constant_identifier_names
+  List<DateTime> RangeToFp(List<DateTimeRange> dt){
+
+    List<DateTime> ld   ;
+    for(int i = 0;i<dt.length;i++){
+      ld.add(dt[i].end);
+      ld.add(dt[i].start);
+    }
+  return ld;
+  }
+
+  int forDurationHour(List<DateTimeRange> dtr){
     double duration = 0;
 
     for (int i=0;i<dtr.length;i++){
@@ -35,8 +59,9 @@ class FichePresence {
       duration = duration + dtr[i].duration.inHours;
 
     }
-    return duration;
+    return duration.round();
   }
+
 }
 
 class Presence extends StatelessWidget{
@@ -52,7 +77,7 @@ class Presence extends StatelessWidget{
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: fp.forDuration(dTR)<1?Text("Look like you just started working here ,you need to do at least a day of work to check your presence"): Container(
+          child: fp.forDurationMin(dTR)<1?Text("Look like you just started working here ,you need to do at least a day of work to check your presence"): Container(
                   child: Column(
                     children:[TimeChart(
                       data: dTR,
@@ -62,7 +87,7 @@ class Presence extends StatelessWidget{
                         viewMode: ViewMode.weekly,
                         chartType: ChartType.amount,
                     ),
-                    Text(fp.forDuration(dTR).toString())]
+                    Text(fp.forDurationHour(dTR).toString())]
                   ),
           ),
         ),

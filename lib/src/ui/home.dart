@@ -13,6 +13,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/Constants.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'idConfirmation.dart';
@@ -118,6 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         if(_cINTextEditingController.text.length!=8){
                           ScaffoldMessenger.of(context).showSnackBar(twix);
                         }else{
+                          try{
+                          EasyLoading.show(status: 'Loading');
                           var cin = int.parse(_cINTextEditingController.text);
 
                           response = await _dataBaseService.loadUser(cin);
@@ -132,11 +135,16 @@ class _MyHomePageState extends State<MyHomePage> {
                          ),
                            );}
                           else
-                             {
-                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                 content: Text("wrong CIN"),
-                               ));
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("wrong CIN"),
+                            ));
                           }
+                          }
+                           catch(e){
+                            EasyLoading.showError('Loading Failed');
+                           }
+
                         }
                       },
                     ),

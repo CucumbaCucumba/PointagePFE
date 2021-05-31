@@ -68,7 +68,7 @@ class AdminViewAccount extends StatelessWidget {
 
                   SizedBox(height: 50,),
                   Center(
-                    child: fp.forDuration(dTR)<1?Text("this user has no recorded hours"): Container(
+                    child: fp.forDurationMin(dTR)<1?Text("this user has no recorded Work Time"): Container(
                       child: Column(
                           children:[TimeChart(
                               data: dTR,
@@ -84,18 +84,23 @@ class AdminViewAccount extends StatelessWidget {
                             RaisedButton(
                                 child:Text('Alter User Presence') ,
                                 onPressed:(){
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR)));
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR,u.cin)));
                                 }),
                             SizedBox(height: 40,),
-                            Text(fp.forDuration(dTR).toString()),
+                            Text(fp.forDurationHour(dTR).toString()),
                             SizedBox(height: 20,),
                             Row(
                               children: [
                                 Container(
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(fp.forDuration(dTR).toString(),
-                                    style: TextStyle(fontSize: 30),),
+                                    child: Column(
+                                      children: [
+                                        Text('Hours'),
+                                        Text(fp.forDurationHour(dTR).toString(),
+                                        style: TextStyle(fontSize: 30),),
+                                      ],
+                                    ),
                                   ),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -116,13 +121,13 @@ class AdminViewAccount extends StatelessWidget {
 
                                   ),
                                 ),
-                                SizedBox(width: 50,),
+                                SizedBox(width: 20,),
                                 Icon(
                                     FontAwesomeIcons.times,
                                   size: 60,
 
                                   ),
-                                SizedBox(width: 50,),
+                                SizedBox(width: 20,),
                                 Container(
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -155,7 +160,40 @@ class AdminViewAccount extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
+                            SizedBox(height: 20,),
+                            Icon (FontAwesomeIcons.equals,size: 60,),
+                            SizedBox(height: 20,),
+                            Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Text((u.wage * fp.forDurationHour(dTR)).toString(),
+                                      style: TextStyle(fontSize: 30),),
+                                  ],
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: Offset(0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                      color: Colors.redAccent,
+                                      width: 5,
+                                      style: BorderStyle.solid
+                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+
+                              ),
+                            ),
+
 
                           ]
                       ),
