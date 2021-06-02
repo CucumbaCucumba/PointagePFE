@@ -22,7 +22,7 @@ class IdConfirm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EasyLoading.showSuccess('Success');
+
     MLVisionService _mlVisionService = MLVisionService();
     _mlVisionService.initialize();
 

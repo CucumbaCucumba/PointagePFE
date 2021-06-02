@@ -2,6 +2,7 @@ import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AdminChangePass extends StatelessWidget {
   AdminChangePass(this.u);
@@ -55,10 +56,16 @@ class AdminChangePass extends StatelessWidget {
                       if((_newPassTextEditingController.text.isEmpty)||(_oldPassTextEditingController.text==u.password)){
                         bool b = _newPassTextEditingController.text == _cnewPassTextEditingController.text;
                         if(b){
+                          EasyLoading.show(status: 'Loading');
+                          try{
                           await ApiService().changeUserInfo(null,_newPassTextEditingController.text,_userNamePassTextEditingController.text,null,u.cin );
                           u.password=_newPassTextEditingController.text;
                           u.user=_userNamePassTextEditingController.text;
-                          Navigator.pop(context,u);
+                          EasyLoading.showSuccess('Success');
+                          Navigator.pop(context,u);}
+                          catch(e){
+                            EasyLoading.showError('Loading Failed');
+                          }
                         }
                       }
                     },child: Text('save'),)

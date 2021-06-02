@@ -1,8 +1,9 @@
 import 'package:FaceNetAuthentication/src/ui/AlterTime.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'adminChangeUserInfo.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/changeUserInfo.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import '../ui/Presence.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class AdminViewAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DateTimeRange> dTR = fp.fPRange();
     return Scaffold(
+      appBar: AppBar(
+        title: Text (u.status),
+      ),
         body: Padding(
           padding: const EdgeInsets.all(30),
           child: ListView(
@@ -63,6 +67,7 @@ class AdminViewAccount extends StatelessWidget {
                         ),
 
                       );
+
                       Navigator.pop(context,u);
                     }, child: Text('Change User Info'),),
 
@@ -84,7 +89,7 @@ class AdminViewAccount extends StatelessWidget {
                             RaisedButton(
                                 child:Text('Alter User Presence') ,
                                 onPressed:(){
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR,u.cin)));
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR:dTR,cin:u.cin,fp: fp)));
                                 }),
                             SizedBox(height: 40,),
                             Text(fp.forDurationHour(dTR).toString()),

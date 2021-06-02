@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import '../ui/Presence.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:FaceNetAuthentication/src/models/users.dart';
+
+
 import 'package:dio/dio.dart' ;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +34,33 @@ class ApiService {
   var dio = Dio(options);
   http.Client client = new http.Client();
 
+  Future<FichePresence> savePreDeterminedPresence(List<DateTimeRange> dTR,FichePresence fp, int cin)async{
+    if (dio.interceptors.isEmpty)
+    {
+      dio.interceptors.add(CustomInterceptors());
+    }
+    var S = 'I ' + dTR[dTR.length-1].start.toString().substring(0,dTR[dTR.length-1].start.toString().indexOf('.'));
+    S =S +' O ' + dTR[dTR.length-1].end.toString().substring(0,dTR[dTR.length-1].end.toString().indexOf('.'));
+    for (int i = dTR.length-2;i>=0;i--){
+
+      S = S + ' I ' + dTR[i].start.toString().substring(
+            0, dTR[i].start.toString().indexOf('.'));
+      S = S + ' O '+dTR[i].end.toString().substring(0,dTR[i].end.toString().indexOf('.'));
+       print(S);
+     }
+    if(fp.dates.length % 2 !=0){
+
+      S = S + ' I ' + fp.dates.last.toString().substring(0,dTR[dTR.length-1].end.toString().indexOf('.'));
+
+    }
+
+    S = S.replaceAll('-',' ').replaceAll(':', ' ');
+    await dio.put('http://192.168.137.1:8000/presence/$cin',data: {'date': S });
+    return  loadPresenceDate(fp);
+  }
+
+
+
   /// loads from database
   Future<FichePresence> savePresence(FichePresence fp, int cin)async{
     if (dio.interceptors.isEmpty)
@@ -42,6 +71,7 @@ class ApiService {
     String dS = response.data['dates'];
     var S;
     var dTN = DateTime.now().toString().substring(0,DateTime.now().toString().indexOf('.'));
+    /// if FichePresence is empty S = I + Current hour and date
     if (dS==null){
       S = 'I '+dTN;
     }else{

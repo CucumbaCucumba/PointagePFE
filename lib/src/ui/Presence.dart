@@ -40,16 +40,8 @@ class FichePresence {
 
   }
 
-  // ignore: non_constant_identifier_names
-  List<DateTime> RangeToFp(List<DateTimeRange> dt){
 
-    List<DateTime> ld   ;
-    for(int i = 0;i<dt.length;i++){
-      ld.add(dt[i].end);
-      ld.add(dt[i].start);
-    }
-  return ld;
-  }
+
 
   int forDurationHour(List<DateTimeRange> dtr){
     double duration = 0;

@@ -127,6 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
                           Directory tempDir = await getTemporaryDirectory();
 
+                          EasyLoading.dismiss();
+
                           if(response.statusCode == 200){
                          Navigator.push(
                          context,
@@ -148,33 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                       },
                     ),
-                   RaisedButton(
-                     child: Text('Sign Up'),
-                     onPressed: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                           builder: (BuildContext context) => SignUp(
-                             cameraDescription: cameraDescriptionF,
-                           ),
-                         ),
-                       );
-                     },
-                   ),
-                    RaisedButton(
-                      child: Text('Delete'),
-                      onPressed: () async{
-                        await _dataBaseService.deleteUser(_cINTextEditingController.text);
-                      },
-                    ),
-                    RaisedButton(
-                      child: Text('test'),
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (BuildContext context) => YellowBird(),
-                        ),);
-                      },
-                    ),
+
 
                     TextButton(onPressed: ()async{
                       await _dataBaseService.loadUser(12845014);

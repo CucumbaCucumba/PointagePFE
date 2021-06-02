@@ -4,9 +4,10 @@ import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/ressources/base64Functions.dart';
 import 'package:FaceNetAuthentication/src/ui/AVAdminAccount.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import '../ui/Presence.dart';
 import 'package:flutter/material.dart';
 import 'package:FaceNetAuthentication/src/ui/ViewUserAccount.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
@@ -96,12 +97,19 @@ class ViewUsers extends StatelessWidget {
                               onPressed: () async {
 
                                 if(snapshot.data.result[index].status == 'user'){
+                                  EasyLoading.show(status: 'Loading');
+                                  try{
                                   FichePresence fp = await api.loadPresence(snapshot.data.result[index].cin);
+                                  EasyLoading.dismiss();
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>AdminViewAccount(User().fromSnap(snapshot.data.result, index),fp)
                                       ));
+                                  }
+                                      catch(e){
+                                        EasyLoading.showError('Loading Failed');
+                                      }
                                 }else{
 
                                   Navigator.push(
@@ -109,6 +117,7 @@ class ViewUsers extends StatelessWidget {
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>AdminViewAdminAccount(User().fromSnap(snapshot.data.result, index))
                                       ));
+                                  EasyLoading.showSuccess('Success');
 
                                 }
                               },

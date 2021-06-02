@@ -1,25 +1,30 @@
 import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
+import 'package:FaceNetAuthentication/src/ui/ViewUsers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import 'Presence.dart';
+
 
 
 
 class AlterTime extends StatefulWidget {
 
+
   List<DateTimeRange> dTR;
   int cin;
+  FichePresence fp;
 
-  AlterTime(this.dTR,this.cin);
+  AlterTime({this.dTR,this.cin,this.fp});
 
   @override
-  AlterTimeState createState() => AlterTimeState(this.dTR,this.cin);
+  AlterTimeState createState() => AlterTimeState(this.dTR,this.cin,this.fp);
 }
 
 class AlterTimeState extends State<AlterTime> {
 
-  AlterTimeState(this.dTR,this.cin);
+  AlterTimeState(this.dTR,this.cin,this.fPOriginal);
 
   ApiService api = new ApiService();
 
@@ -27,6 +32,7 @@ class AlterTimeState extends State<AlterTime> {
 
   List<DateTimeRange> dTR;
   int cin;
+  FichePresence fPOriginal;
 
   List<Icon> aDTRC=[];
   List<Icon> aDTRIT=[];
@@ -75,9 +81,18 @@ class AlterTimeState extends State<AlterTime> {
       aDTRIT.add(Icon(FontAwesomeIcons.trash,size: 20,color: Colors.white,));
     }
   }
+    if(fPOriginal.dates != null && fPOriginal.dates.length % 2 != 0){
+      eDdayDV.add(fPOriginal.dates[0].day.toString());
+      eDhourDV.add(fPOriginal.dates[0].hour.toString());
+      eDminuteDV.add(fPOriginal.dates[0].minute.toString());
 
+      lDyearDV.add(fPOriginal.dates[0].year.toString());
+      lDmonthDV.add(fPOriginal.dates[0].month.toString());
+      lDdayDV.add('');
+      lDhourDV.add('');
+      lDminuteDV.add('');
+    }
     for (int i=0;i<dTR.length;i++) {
-
 
       eDdayDV.add(dTR[i].start.day.toString());
       eDhourDV.add(dTR[i].start.hour.toString());
@@ -103,9 +118,17 @@ class AlterTimeState extends State<AlterTime> {
         child: Icon(FontAwesomeIcons.save),
         onPressed: ()async{
           FichePresence fP = FichePresence(cin,null,false);
-          fP.dates = fP.RangeToFp(dTR);
-            await api.savePresence(fP,cin);
+          try {
+            EasyLoading.show(status: 'Loading');
+            fP.dates = rangeToFp(dTR,fPOriginal);
+            await api.savePreDeterminedPresence(dTR,fP,cin);
+            EasyLoading.dismiss();
+            Navigator.push(context,MaterialPageRoute(builder: (context) => ViewUsers()));
 
+          }
+          catch(e){
+
+          }
         },
       ),
       appBar: AppBar(
@@ -446,6 +469,20 @@ class AlterTimeState extends State<AlterTime> {
     );
   }
 
+
+  List<DateTime> rangeToFp(List<DateTimeRange> dt,FichePresence fp){
+
+    List<DateTime> ld = []  ;
+    for(int i = 0;i<dt.length;i++){
+      ld.add(dt[i].end);
+      ld.add(dt[i].start);
+    }
+    dynamic d = fp.dates.first;
+    print('wow');
+    fp.dates.length % 2 != 0?ld.add(d):print('wow');
+    print('wow');
+    return ld;
+  }
 
 }
 

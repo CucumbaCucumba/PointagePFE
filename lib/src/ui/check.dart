@@ -1,4 +1,4 @@
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import '../ui/Presence.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 import 'package:flutter/cupertino.dart';
