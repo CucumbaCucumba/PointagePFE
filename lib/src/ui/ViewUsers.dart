@@ -10,6 +10,8 @@ import 'package:FaceNetAuthentication/src/ui/ViewUserAccount.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'home.dart';
+
 
 class ViewUsers extends StatelessWidget {
   
@@ -123,9 +125,38 @@ class ViewUsers extends StatelessWidget {
                               },
                             ),
                             SizedBox(width: 50,),
-                            Icon(
-                                FontAwesomeIcons.trash
-                            )
+                            snapshot.data.result[index].status=='user'?GestureDetector(
+                              onTap:(){
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      content: Text('this User will be deleted Permanently!'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed:()async{
+                                              try{
+                                                EasyLoading.show(status: 'Loading');
+                                                await ApiService().deleteUser(snapshot.data.result[index].cin.toString());
+                                                EasyLoading.dismiss();
+                                                Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) => ViewUsers()
+                                                ),
+                                              );}
+                                              catch(e){
+                                                EasyLoading.showError('Failure');
+                                                Navigator.pop(context);
+                                              }
+                                            }
+                                            , child: Text('Confirm')
+                                        )],
+                                    ));
+                              },
+                              child: Icon(
+                                  FontAwesomeIcons.trash
+                              ),
+                            ):Container()
                           ],
                         )
                       ],

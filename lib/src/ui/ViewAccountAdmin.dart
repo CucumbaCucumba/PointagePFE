@@ -1,3 +1,7 @@
+import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
+import 'package:FaceNetAuthentication/src/ui/home.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'changeAdminInfo.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,6 +63,31 @@ class ViewAccountAdmin extends StatelessWidget {
                     );
                     Navigator.pop(context,u);
                   }, child: Text('Change User Info'),),
+                SizedBox(height: 20,),
+                TextButton(
+                    onPressed:(){
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text('this User will be deleted Permanently!'),
+                            actions: [
+                              TextButton(
+                                  onPressed:()async{
+                                    EasyLoading.show(status: 'Loading');
+                                    await ApiService().deleteUser(u.cin.toString());
+                                    EasyLoading.dismiss();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyHomePage()
+                                      ),
+                                    );
+                                  }
+                                  , child: Text('Confirm')
+                              )],
+                          ));
+                    },
+                    child: Text('Delete Account'))
 
               ],
             ),
