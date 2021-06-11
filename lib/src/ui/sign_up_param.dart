@@ -1,6 +1,7 @@
 import 'file:///E:/PointagePFE/lib/src/ressources//textFormat.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'package:FaceNetAuthentication/src/ressources/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,18 +108,28 @@ class SignUpPState extends State<SignUpPage>{
               decoration: InputDecoration(labelText: "Password *"),
               obscureText: true,
               ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextField(
+                  onChanged: (String value){
+                    if(value.length==9){
+                      _cINTextEditingController.text=_cINTextEditingController.text.substring(0, _cINTextEditingController.text.length - 1);
+                    }
+                  },
+                  controller: _cINTextEditingController ,
+                  keyboardType: TextInputType.number,
+                  inputFormatters:<TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  style: TextStyle(
+                      color: Colors.white
+                  ),
+                  decoration: Const.textFieldDeco('Enter CIN Number'),
+
+                ),
+              ),
               TextField(
-                onChanged: (String value){
-                  if(value.length==9){
-                    _cINTextEditingController.text=_cINTextEditingController.text.substring(0, _cINTextEditingController.text.length - 1);
-                  }
-                },
-                controller:_cINTextEditingController,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                 FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: InputDecoration(labelText: "CIN",fillColor: c,filled: true),
+                decoration: Const.textFieldDeco('Enter CIN Number'),
               ),
               TextField(
                 controller:_wageTextEditingController,

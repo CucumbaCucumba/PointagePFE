@@ -17,7 +17,10 @@ class ViewUsers extends StatelessWidget {
   
   Base64Fun fun = Base64Fun();
   ApiService api = new ApiService();
-  
+  User admin;
+
+  ViewUsers(this.admin);
+
   @override
   Widget build(BuildContext context) {
     bloc.fetchAllUsers();
@@ -106,7 +109,7 @@ class ViewUsers extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (BuildContext context) =>AdminViewAccount(User().fromSnap(snapshot.data.result, index),fp)
+                                          builder: (BuildContext context) =>AdminViewAccount(user:User().fromSnap(snapshot.data.result, index),fp:fp,admin: admin,)
                                       ));
                                   }
                                       catch(e){
@@ -141,7 +144,7 @@ class ViewUsers extends StatelessWidget {
                                                 Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) => ViewUsers()
+                                                    builder: (context) => ViewUsers(admin)
                                                 ),
                                               );}
                                               catch(e){

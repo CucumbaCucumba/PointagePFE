@@ -3,6 +3,7 @@ import 'file:///E:/PointagePFE/lib/src/ui/viewAccount.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/check.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'package:FaceNetAuthentication/src/ressources/NavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:slide_digital_clock/slide_digital_clock.dart';
 import 'home.dart';
@@ -16,34 +17,46 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Welcome back, ' + username.user + '!'),
-        leading: Container(),
+        centerTitle: true,
+        title: Text('Welcome back'),
+        backgroundColor: Colors.transparent,
+        leading: Icon(Icons.list_outlined),
       ),
+        drawer: NavBar(username),
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+               'assets/deepOrange.jpg'
+            ),
+          fit: BoxFit.cover
+          )
+        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Hero(
-                tag: 'clock',
-                child: DigitalClock(
-                  digitAnimationStyle: Curves.elasticOut,
-                  is24HourTimeFormat: false,
-                  areaDecoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                  hourMinuteDigitDecoration:BoxDecoration(color: Colors.transparent),
-                  hourMinuteDigitTextStyle: TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: 50,
-                  ),
-                  secondDigitDecoration: BoxDecoration(color: Colors.transparent),
-                  amPmDigitTextStyle: TextStyle(
-                      color: Colors.blueGrey, fontWeight: FontWeight.bold),
-                ),
-              ),
+             // Hero(
+             //   tag: 'clock',
+             //   child: DigitalClock(
+             //     digitAnimationStyle: Curves.elasticOut,
+             //     is24HourTimeFormat: false,
+             //     areaDecoration: BoxDecoration(
+             //       color: Colors.transparent,
+             //     ),
+             //     hourMinuteDigitDecoration:BoxDecoration(color: Colors.transparent),
+             //     hourMinuteDigitTextStyle: TextStyle(
+             //       color: Colors.white,
+             //       fontSize: 50,
+             //     ),
+             //     secondDigitDecoration: BoxDecoration(color: Colors.transparent),
+             //     amPmDigitTextStyle: TextStyle(
+             //         color: Colors.white, fontWeight: FontWeight.bold),
+             //   ),
+             // ),
               SizedBox(height: 20,),
 
               RaisedButton(

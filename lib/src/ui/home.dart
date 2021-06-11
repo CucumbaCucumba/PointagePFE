@@ -3,6 +3,7 @@ import 'dart:io';
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
+import 'package:FaceNetAuthentication/src/ressources/RoundedButton.dart';
 import 'package:FaceNetAuthentication/src/ui/test.dart';
 
 import 'file:///E:/PointagePFE/lib/src/ui/sign-up.dart';
@@ -97,6 +98,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    Container(
+                      height: 200,
+                      width: 200,
+                      child: Image.asset('assets/logo.png'),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: TextField(
@@ -108,18 +114,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(
                       color: Colors.white
                 ),
-                      decoration: Const.textFieldDeco('Enter CIN Number')
-                        ,),
-                    ),
+                      decoration: Const.textFieldDeco('Enter CIN Number'),
 
-                    RaisedButton(
-                      child: Text('Sign In'),
-                      onPressed: () async{
-                        Response response;
-                        if(_cINTextEditingController.text.length!=8){
-                          ScaffoldMessenger.of(context).showSnackBar(twix);
-                        }else{
-                          try{
+                      ),
+                    ),
+                    RoundedButton(Color(0xFF14A6AF),'Log In',() async{
+                      Response response;
+                      if(_cINTextEditingController.text.length!=8){
+                        ScaffoldMessenger.of(context).showSnackBar(twix);
+                      }else{
+                        try{
                           EasyLoading.show(status: 'Loading');
                           var cin = int.parse(_cINTextEditingController.text);
 
@@ -130,40 +134,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           EasyLoading.dismiss();
 
                           if(response.statusCode == 200){
-                         Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                           builder: (BuildContext context) => IdConfirm(path: tempDir.path,u: _dataBaseService.currUser,),
-                         ),
-                           );}
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => IdConfirm(path: tempDir.path,u: _dataBaseService.currUser,),
+                              ),
+                            );}
                           else
                           {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("wrong CIN"),
                             ));
                           }
-                          }
-                           catch(e){
-                            EasyLoading.showError('Loading Failed');
-                           }
-
                         }
-                      },
-                    ),
+                        catch(e){
+                          EasyLoading.showError('Loading Failed');
+                        }
 
-
-                    TextButton(onPressed: ()async{
-                      await _dataBaseService.loadUser(12845014);
-                      int cin = _dataBaseService.currUser.cin;
-                      FichePresence fPresence = await _dataBaseService.loadPresence(cin);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Profile(
-                                username: _dataBaseService.currUser,
-                                fp: fPresence,
-                              )));
-                    }, child: Text('Skip')),
+                      }
+                    }, )
                   ],
                 ),
               )

@@ -1,6 +1,12 @@
+import 'dart:ui';
+
+import 'package:FaceNetAuthentication/src/ressources/NavBar.dart';
 import 'package:FaceNetAuthentication/src/ui/ViewUsers.dart';
 import 'package:FaceNetAuthentication/src/ui/sign-up.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
+import 'package:FaceNetAuthentication/src/ressources/ReusableCard.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'ViewAccountAdmin.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
@@ -25,6 +31,7 @@ class AdminProfile extends StatelessWidget {
     cameraDescriptionB = cameras.firstWhere(
           (CameraDescription camera) => camera.lensDirection == CameraLensDirection.back,
     );
+    username.cD = cameraDescriptionF;
   }
 
   User username;
@@ -33,61 +40,76 @@ class AdminProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     startUp();
     Future.delayed(Duration(seconds: 2));
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome back, ' + username.user + '!'),
-          leading: Container(),
-        ),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar (centerTitle: true,title: Text('Welcome Back'),backgroundColor: Colors.transparent,),
+        drawer:AdminNavBar(username) ,
         body: Container(
-          child: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-
-                  RaisedButton(
-                    child: Text('Logout'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MyHomePage()
-                        ),
-                      );
-                    },
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                      'assets/deepOrange.jpg'
                   ),
-                  RaisedButton(
-                    child: Text('Create an Account'),
-                    onPressed: (){
-                      Navigator.push(context,
-                      MaterialPageRoute(builder: (context)=> SignUp(cameraDescription: cameraDescriptionF))
-                      );
-                    },
-
+                  fit: BoxFit.cover
+              )
+          ),
+          child: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 70, 10,10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(0, 0, 0, 0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(20))
                   ),
-                  RaisedButton(
-                      child: Text('Users Accounts'),
-                      onPressed: (){
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context)=> ViewUsers())
-                        );
-                      },
-                  ),
-                  RaisedButton(
-                      child: Text('Account settings'
-                          ''),
-                      onPressed: () async{
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewAccountAdmin(username)
+                  child: Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ReusableCard(
+                              colour: Color(0x33000000),
+                              childCard: ReusableCardContent(
+                                text: 'Create Account',
+                                iconD: FontAwesomeIcons.plus,
+                              ),
+                            onPress: (){
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context)=> SignUp(cameraDescription: username.cD))
+                              );
+                            },
+                              ),
+                          SizedBox(height: 20,),
+                          ReusableCard(
+                            colour: Color(0x33000000),
+                            childCard: ReusableCardContent(
+                              text: 'Users',
+                              iconD: FontAwesomeIcons.user,
+                            ),
+                            onPress: (){Navigator.push(context,
+                                MaterialPageRoute(builder: (context)=> ViewUsers(username))
+                              );
+                           },
                           ),
-                        );
-                      }
+                    ReusableCard(
+                      colour: Color(0x33000000),
+                      childCard: ReusableCardContent(
+                        text: 'Account Settings',
+                        iconD: FontAwesomeIcons.cogs,
+                      ),
+                      onPress: (){Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=> ViewAccountAdmin(username))
+                      );
+                      },
+                    ),
+                          ]
 
-                  )
-                  ,]
-
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         )

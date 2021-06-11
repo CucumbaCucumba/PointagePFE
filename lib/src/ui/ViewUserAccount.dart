@@ -1,3 +1,4 @@
+import 'package:FaceNetAuthentication/src/ressources/NavBar.dart';
 import 'package:FaceNetAuthentication/src/ui/AlterTime.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -13,17 +14,21 @@ import 'package:time_chart/time_chart.dart';
 
 // ignore: must_be_immutable
 class AdminViewAccount extends StatelessWidget {
-  AdminViewAccount(this.u,this.fp);
+  AdminViewAccount({this.user,this.admin,this.fp});
 
   FichePresence fp;
-  User u;
+  User user;
+  User admin;
 
   @override
   Widget build(BuildContext context) {
     List<DateTimeRange> dTR = fp.fPRange();
     return Scaffold(
+      drawer: AdminNavBar(admin),
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text (u.status),
+        backgroundColor: Colors.transparent,
+        title: Text (user.status),
       ),
         body: Padding(
           padding: const EdgeInsets.all(30),
@@ -37,38 +42,38 @@ class AdminViewAccount extends StatelessWidget {
 
                     width: 200,
                     height: 200,
-                    child: Image(image: Image.file(u.decodedImage).image,),
+                    child: Image(image: Image.file(user.decodedImage).image,),
 
                   ),
                   Text(
-                    'User :' + u.user,
+                    'User :' + user.user,
                     style: TextStyle(fontSize: 20),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Text(
-                    'CIN :' + u.cin.toString(),
+                    'CIN :' + user.cin.toString(),
                     style: TextStyle(fontSize: 20),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Text(
-                    'Status :' + u.status,
+                    'Status :' + user.status,
                     style: TextStyle(fontSize: 20),
                   ),
                   TextButton(
                     onPressed: ()async{
-                      u = await Navigator.push(
+                      user = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AdminChangePass(u)
+                            builder: (context) => AdminChangePass(user)
                         ),
 
                       );
 
-                      Navigator.pop(context,u);
+                      Navigator.pop(context,user);
                     }, child: Text('Change User Info'),),
 
                   SizedBox(height: 50,),
@@ -89,7 +94,7 @@ class AdminViewAccount extends StatelessWidget {
                             RaisedButton(
                                 child:Text('Alter User Presence') ,
                                 onPressed:(){
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR:dTR,cin:u.cin,fp: fp)));
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR:dTR,cin:user.cin,fp: fp,user: admin,)));
                                 }),
                             SizedBox(height: 40,),
                             Text(fp.forDurationHour(dTR).toString()),
@@ -140,7 +145,7 @@ class AdminViewAccount extends StatelessWidget {
                                       children: [
                                         Text('Wage')
                                         ,
-                                        Text(u.wage.toString(),
+                                        Text(user.wage.toString(),
                                           style: TextStyle(fontSize: 30),),
                                       ],
                                     ),
@@ -174,7 +179,7 @@ class AdminViewAccount extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
-                                    Text((u.wage * fp.forDurationHour(dTR)).toString(),
+                                    Text((user.wage * fp.forDurationHour(dTR)).toString(),
                                       style: TextStyle(fontSize: 30),),
                                   ],
                                 ),

@@ -24,45 +24,11 @@ class _YellowBirdState extends State<YellowBird> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: (){
-                setState(() {
-                  h = 100;
-                listW.add(ListView.builder(
-                  itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text('haha'),
-                    );
-                  },
-                ));
-                });
-                
-              },
-              child: Container(
-              height: h,
+      body: Stack(
+        children: [
+          Container(color: Colors.green,),
 
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: Colors.blueGrey)),
-
-                  child:Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-
-                      children:
-                        listW
-                      ,
-                    ),
-                  ),
-        )
-            ),
-          )
-        ),
+        ],
       ),
     );
   }

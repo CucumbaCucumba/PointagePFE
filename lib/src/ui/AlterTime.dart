@@ -1,3 +1,5 @@
+import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'package:FaceNetAuthentication/src/ressources/NavBar.dart';
 import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/ui/ViewUsers.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,21 +16,21 @@ class AlterTime extends StatefulWidget {
   List<DateTimeRange> dTR;
   int cin;
   FichePresence fp;
-
-  AlterTime({this.dTR,this.cin,this.fp});
+  User user;
+  AlterTime({this.dTR,this.cin,this.fp,this.user});
 
   @override
-  AlterTimeState createState() => AlterTimeState(this.dTR,this.cin,this.fp);
+  AlterTimeState createState() => AlterTimeState(this.dTR,this.cin,this.fp,this.user);
 }
 
 class AlterTimeState extends State<AlterTime> {
 
-  AlterTimeState(this.dTR,this.cin,this.fPOriginal);
+  AlterTimeState(this.dTR,this.cin,this.fPOriginal,this.admin);
 
   ApiService api = new ApiService();
 
 
-
+  User admin;
   List<DateTimeRange> dTR;
   int cin;
   FichePresence fPOriginal;
@@ -128,7 +130,9 @@ class AlterTimeState extends State<AlterTime> {
 
     print('oy');
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+        drawer: AdminNavBar(admin),
+        extendBodyBehindAppBar: true,
+        floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.save),
         onPressed: ()async{
           FichePresence fP = FichePresence(cin,null,false);
@@ -152,7 +156,7 @@ class AlterTimeState extends State<AlterTime> {
             fP.dates = rangeToFp(dTR,fPOriginal);
             await api.savePreDeterminedPresence(dTR,fP,cin);
             EasyLoading.dismiss();
-            Navigator.push(context,MaterialPageRoute(builder: (context) => ViewUsers()));
+            Navigator.push(context,MaterialPageRoute(builder: (context) => ViewUsers(admin)));
 
           }
           catch(e){
@@ -161,6 +165,7 @@ class AlterTimeState extends State<AlterTime> {
         },
       ),
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Text('Change Presence'),
       ),
       body: ListView(
@@ -458,9 +463,12 @@ class AlterTimeState extends State<AlterTime> {
                           child: aDTRIT.last
                       ),
                       onTap: (){
-
-                        RlastFP = true;
-
+                        if(RlastFP==false){
+                          aDTRIT.last = Icon(FontAwesomeIcons.times);
+                        RlastFP = true;}
+                        else{
+                          RlastFP = false;
+                          aDTRIT.last = Icon(FontAwesomeIcons.trash);}
                         }),
 
 

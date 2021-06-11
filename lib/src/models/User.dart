@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:FaceNetAuthentication/src/models/users.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 
 class User {
@@ -13,6 +14,7 @@ class User {
   String workLocation;
   List faceData;
   File decodedImage;
+  CameraDescription cD;
 
 
   User({@required this.user,@required this.password,@required this.faceData,@required this.status,@required this.cin,@required this.wage,@required this.workLocation,@required this.image64});

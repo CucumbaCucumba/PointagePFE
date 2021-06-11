@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:FaceNetAuthentication/src/ressources/Constants.dart';
+import 'package:FaceNetAuthentication/src/ressources/RoundedButton.dart';
 import 'package:path_provider/path_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
@@ -103,107 +105,112 @@ class _AuthActionButtonState extends State<AuthActionButton> {
 
   signSheet(context) {
     return Container(
+      decoration: BoxDecoration(
+        color:Colors.teal,
+        image: DecorationImage(image: Image.asset('assets/deepOrange.jpg').image,fit: BoxFit.cover),
+      ),
       padding: EdgeInsets.all(20),
       height: 300,
-      child: ListView(
-        children: <Widget>[Column(
-          children: [
-            widget.isLogin && predictedUser != null
-                ? Container(
-                    child: Text(
-                      'Welcome back, ' + predictedUser.user + '! 😄',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  )
-                : widget.isLogin
-                    ? Container(
-                        child: Column(
-                          children: [
-                            Text(
-                            'User not found 😞',
-                            style: TextStyle(fontSize: 20),
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: ListView(
+          children: <Widget>[Column(
+            children: [
+              widget.isLogin && predictedUser != null
+                  ? Container(
+                      child: Text(
+                        'Welcome back, ' + predictedUser.user + '! 😄',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white
+                        ),
+
                       ),
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Row(
-                              children: [
-                                RaisedButton(
-                                    child: Text('Retry'),
-                                    onPressed: ()async{
-                                      Directory tempDir = await getTemporaryDirectory();
-                                  Navigator.push(context,
-                                  MaterialPageRoute(builder: (BuildContext context) =>IdConfirm(path:tempDir.path,u: user,)
+                    )
+                  : widget.isLogin
+                      ? Container(
+                          child: Column(
+                            children: [
+                              Text(
+                              'User not found 😞',
+                              style: TextStyle(fontSize: 20),
+                        ),
+                              SizedBox(
+                                height: 50,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RoundedButton(Color(0xFF009688),'Retry', ()async{
+                                    Directory tempDir = await getTemporaryDirectory();
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (BuildContext context) =>IdConfirm(path:tempDir.path,u: user,)
+                                        )
+                                    );
+                                  }),
+                                  SizedBox(width: 50,),
+                                  RaisedButton(
+                                      child:Text('Cancel'),
+                                      onPressed: (){
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (BuildContext context) =>MyHomePage()
+                                            ));
+                                      }
                                   )
-                                  );
-                                }),
-                                SizedBox(width: 50,),
-                                RaisedButton(
-                                    child:Text('Cancel'),
-                                    onPressed: (){
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (BuildContext context) =>MyHomePage()
-                                          ));
-                                    }
-                                )
-                              ],
-                            )
-                          ],
-                        ))
-                    : Container(),
-            !widget.isLogin
-                ? TextField(
-                    controller: _userTextEditingController,
-                    decoration: InputDecoration(labelText: "Your Name"),
-                  )
-                : Container(),
-            widget.isLogin && predictedUser == null
-                ? Container()
-                : TextField(
-                    controller: _passwordTextEditingController,
-                    decoration: InputDecoration(labelText: "Password"),
-                    obscureText: true,
-                  ),
-            !widget.isLogin
-                ?  ListTile(
-              title: const Text('admin'),
-              leading: Radio(
-                value: 'admin',
-                groupValue: V,
-                onChanged: (String value) {
-                  setState(() {
-                    V = value;
-                  });
+                                ],
+                              )
+                            ],
+                          ))
+                      : Container(),
+              !widget.isLogin
+                  ? TextField(
+                      controller: _userTextEditingController,
+                      decoration:   Const.textFieldDeco('Name'),
+                    )
+                  : Container(),
+              widget.isLogin && predictedUser == null
+                  ? Container()
+                  : TextField(
+                      controller: _passwordTextEditingController,
+                      decoration: Const.textFieldDeco('Password'),
+                      obscureText: true,
+                    ),
+              !widget.isLogin
+                  ?  ListTile(
+                title: const Text('admin'),
+                leading: Radio(
+                  value: 'admin',
+                  groupValue: V,
+                  onChanged: (String value) {
+                    setState(() {
+                      V = value;
+                    });
 
-                },
-              ),
-            ): Container(),
-            !widget.isLogin ? ListTile(
-              title: const Text('user'),
-              leading: Radio(
-                value: 'user',
-                groupValue: V,
-                onChanged: (String value) {
-                  setState(() {
-                    V = value;
-                  });
+                  },
+                ),
+              ): Container(),
+              !widget.isLogin ? ListTile(
+                title: const Text('user'),
+                leading: Radio(
+                  value: 'user',
+                  groupValue: V,
+                  onChanged: (String value) {
+                    setState(() {
+                      V = value;
+                    });
 
-                },
-              ),
-            ): Container(),
+                  },
+                ),
+              ): Container(),
 
-            widget.isLogin && predictedUser != null
-                ? RaisedButton(
-                    child: Text('Login'),
-                    onPressed: () async {
-                      print('test');
-                      await _signIn(context);
-                    },
-                  )
-
-                    : Container(),
-          ],
-        ),]
+              widget.isLogin && predictedUser != null
+                  ? RoundedButton(Color(0xFF14A6AF),'Login', () async {
+                          await _signIn(context);
+                        },)
+                      : Container(),
+            ],
+          ),]
+        ),
       ),
     );
   }
