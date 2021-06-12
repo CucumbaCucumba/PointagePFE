@@ -1,6 +1,7 @@
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:FaceNetAuthentication/src/ui/ViewAccountAdmin.dart';
 import 'package:FaceNetAuthentication/src/ui/ViewUsers.dart';
+import 'package:FaceNetAuthentication/src/ui/adminProfile.dart';
 import 'package:FaceNetAuthentication/src/ui/home.dart';
 import 'package:FaceNetAuthentication/src/ui/sign-up-First.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,15 @@ class AdminNavBar extends StatelessWidget {
               ),
             ),
 
+          ListTile(
+            leading: Icon(FontAwesomeIcons.home),
+            title: Text('Home Screen'),
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=> AdminProfile(username: user))
+              );
+            },
+          ),
           ListTile(
             leading: Icon(FontAwesomeIcons.plus),
             title: Text('Create Account'),

@@ -6,6 +6,7 @@ import 'package:FaceNetAuthentication/src/ressources/Constants.dart';
 import 'package:FaceNetAuthentication/src/ressources/base64Functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -100,6 +101,7 @@ class SignUpPState extends State<ImageConfirm>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FloatingActionButton(
+              child: Icon(FontAwesomeIcons.check),
                 heroTag: 'f1',
                 onPressed: (){
                   BoxedReturns bR = new BoxedReturns(true, user);
@@ -107,6 +109,8 @@ class SignUpPState extends State<ImageConfirm>{
             }),
             SizedBox(width: 40,),
             FloatingActionButton(
+                child: Icon(FontAwesomeIcons.times),
+                backgroundColor: Colors.red.shade400,
                 heroTag: 'f2',
                 onPressed: (){
                   BoxedReturns bR = new BoxedReturns(false, user);

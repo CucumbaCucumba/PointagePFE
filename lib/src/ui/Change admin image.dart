@@ -13,6 +13,7 @@ import 'package:FaceNetAuthentication/src/ui/ImageConfirmation.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
@@ -214,6 +215,7 @@ class SignUpState extends State<ChangeImage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
+          child: Icon(FontAwesomeIcons.camera),
           onPressed: () async{
             await onShot();
             BoxedReturns bR = await Navigator.push

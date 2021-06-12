@@ -77,7 +77,7 @@ class AdminProfile extends StatelessWidget {
                               ),
                             onPress: (){
                               Navigator.push(context,
-                                  MaterialPageRoute(builder: (context)=> SignUp(cameraDescription: username.cD))
+                                  MaterialPageRoute(builder: (context)=> SignUp(cameraDescription: username.cD,admin: username,))
                               );
                             },
                               ),

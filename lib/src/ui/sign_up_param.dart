@@ -95,66 +95,63 @@ class SignUpPState extends State<SignUpPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(15),
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              TextField(
-                controller: _userTextEditingController,
-                decoration: InputDecoration(labelText: "Your Name *")),
-            TextField(
-              controller: _passwordTextEditingController,
-              decoration: InputDecoration(labelText: "Password *"),
-              obscureText: true,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextField(
-                  onChanged: (String value){
-                    if(value.length==9){
-                      _cINTextEditingController.text=_cINTextEditingController.text.substring(0, _cINTextEditingController.text.length - 1);
-                    }
-                  },
-                  controller: _cINTextEditingController ,
-                  keyboardType: TextInputType.number,
-                  inputFormatters:<TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  style: TextStyle(
-                      color: Colors.white
-                  ),
-                  decoration: Const.textFieldDeco('Enter CIN Number'),
-
+      body: ListView(
+        children:[ Padding(
+          padding: EdgeInsets.all(15),
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  controller: _userTextEditingController,
+                  decoration: Const.textFieldDeco('Name'),
                 ),
-              ),
               TextField(
-                decoration: Const.textFieldDeco('Enter CIN Number'),
-              ),
-              TextField(
-                controller:_wageTextEditingController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true,signed: false),
+                controller: _passwordTextEditingController,
+                decoration: Const.textFieldDeco('Password'),
+                obscureText: true,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextField(
+                    onChanged: (String value){
+                      if(value.length==9){
+                        _cINTextEditingController.text=_cINTextEditingController.text.substring(0, _cINTextEditingController.text.length - 1);
+                      }
+                    },
+                    controller: _cINTextEditingController ,
+                    keyboardType: TextInputType.number,
+                    inputFormatters:<TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    style: TextStyle(
+                        color: Colors.white
+                    ),
+                    decoration: Const.textFieldDeco('CIN'),
 
-                inputFormatters: [_amountValidator],
+                  ),
+                ),
 
-                decoration: InputDecoration(labelText: "Wage *"),
+                TextField(
+                  controller:_wageTextEditingController,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true,signed: false),
 
-              ),
-              TextField(
-                  controller: _workLocationTextEditingController,
-                  decoration: InputDecoration(labelText: "Work Location *")),
-              SizedBox(height: 20,),
+                  inputFormatters: [_amountValidator],
 
-              RaisedButton(
-                child: Text('Sign Up!'),
-                onPressed: () async {
-                  await _signUp(context);
+                  decoration: Const.textFieldDeco('Salary'),
+                ),
+                SizedBox(height: 20,),
 
-                },
-              )
-            ],
+                RaisedButton(
+                  child: Text('Sign Up!'),
+                  onPressed: () async {
+                    await _signUp(context);
+
+                  },
+                )
+              ],
+            ),
           ),
-        ),
+        ),]
       ),
     );
   }

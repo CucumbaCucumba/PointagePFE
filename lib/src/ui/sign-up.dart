@@ -5,6 +5,8 @@ import 'file:///E:/PointagePFE/lib/src/ressources/FacePainter.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/camera.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/ml_vision_service.dart';
+import 'package:FaceNetAuthentication/src/models/User.dart';
+import 'package:FaceNetAuthentication/src/ressources/NavBar.dart';
 import 'package:FaceNetAuthentication/src/ui/sign_up_paramA.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -15,17 +17,19 @@ import 'package:path_provider/path_provider.dart';
 
 class SignUp extends StatefulWidget {
   final CameraDescription cameraDescription;
+  final admin;
 
-  const SignUp({Key key, @required this.cameraDescription}) : super(key: key);
+  const SignUp({Key key, @required this.cameraDescription,@required this.admin}) : super(key: key);
 
   @override
-  SignUpState createState() => SignUpState();
+  SignUpState createState() => SignUpState(this.admin);
 }
 
 class SignUpState extends State<SignUp> {
   String imagePath;
   Face faceDetected;
   Size imageSize;
+  User admin;
 
   bool _detectingFaces = false;
   bool pictureTaked = false;
@@ -41,6 +45,8 @@ class SignUpState extends State<SignUp> {
   MLVisionService _mlVisionService = MLVisionService();
   CameraService _cameraService = CameraService();
   FaceNetService _faceNetService = FaceNetService();
+
+  SignUpState(this.admin);
 
   @override
   void initState() {
@@ -153,6 +159,7 @@ class SignUpState extends State<SignUp> {
         .size
         .width;
     return Scaffold(
+        drawer: AdminNavBar(admin),
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,
           builder: (context, snapshot) {
@@ -211,7 +218,7 @@ class SignUpState extends State<SignUp> {
             await Navigator.push
               (context, MaterialPageRoute
               (builder: (context) =>
-                SignUpPageA(_initializeControllerFuture, onPressed: onShot)
+                SignUpPageA(_initializeControllerFuture,admin:this.admin, onPressed: onShot,)
             )
             );
             Navigator.pop(context);
