@@ -1,5 +1,6 @@
 import 'package:FaceNetAuthentication/src/blocs/UsersBloc.dart';
 import 'package:FaceNetAuthentication/src/models/users.dart';
+import 'package:FaceNetAuthentication/src/ressources/RoundedButton.dart';
 import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/ressources/base64Functions.dart';
 import 'package:FaceNetAuthentication/src/ui/AVAdminAccount.dart';
@@ -25,20 +26,24 @@ class ViewUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     bloc.fetchAllUsers();
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text('Users'),
       ),
-      body: StreamBuilder(
-        stream: bloc.allMovies,
-        builder: (context, AsyncSnapshot<Users> snapshot) {
-          if (snapshot.hasData)
-            if(snapshot.data.result != null){
-            return buildList(snapshot);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          return Center(child: CircularProgressIndicator());
-        },
+      body: Container(
+        decoration: BoxDecoration(image: DecorationImage(image: Image.asset('assets/deepOrange.jpg').image,fit: BoxFit.cover)),
+        child: StreamBuilder(
+          stream: bloc.allMovies,
+          builder: (context, AsyncSnapshot<Users> snapshot) {
+            if (snapshot.hasData)
+              if(snapshot.data.result != null){
+              return buildList(snapshot);
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
@@ -47,7 +52,7 @@ class ViewUsers extends StatelessWidget {
     return GridView.builder(
         itemCount: snapshot.data.result.length,
         gridDelegate:
-        new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+        new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1,childAspectRatio: 0.95),
         itemBuilder: (BuildContext context, int index) {
 
           return
@@ -55,7 +60,6 @@ class ViewUsers extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: 170,
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -65,103 +69,107 @@ class ViewUsers extends StatelessWidget {
                           offset: Offset(0, 3), // changes position of shadow
                         ),
                       ],
-                      color: snapshot.data.result[index].status=='admin'?Colors.lightGreen:Colors.blue,
+                      color: snapshot.data.result[index].status=='admin'?Color(0x66000000):Color(0x33000000),
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       border: Border.all(color: Colors.blueGrey)
                   ),
-
-                  height: 50,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Image(
-                              height: 200,
-                              image: Image.file(snapshot.data
-                                  .result[index].decodedImage).image,),
-
+                            CircleAvatar(
+                              radius: 50,
+                              child: ClipOval(
+                                child: Image(image: Image.file(snapshot.data
+                                    .result[index].decodedImage).image,
+                                  fit: BoxFit.cover,
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              ),
+                            ),
                             Center(
-                              child: Column(
-
-                                children: [
-                                  Text('User Name :'+ snapshot.data.result[index].userName),
-                                  SizedBox(height: 30,),
-                                  Text('CIN :'+ snapshot.data.result[index].cin.toString()),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(10,20,0,0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('User Name :'+ snapshot.data.result[index].userName,
+                                        style:TextStyle(color: Colors.white,fontSize: 20)
+                                    ),
+                                    SizedBox(height: 15,),
+                                    Text('CIN :'+ snapshot.data.result[index].cin.toString(),
+                                        style:TextStyle(color: Colors.white,fontSize: 20) ),
+                                    SizedBox(height: 15,),
+                                    Text('Status :'+ snapshot.data.result[index].status,
+                                      style:TextStyle(color: Colors.white,fontSize: 20) ,)
+                                  ],
+                                ),
                               ),
                             )
                           ],
                         ),
                         SizedBox(height: 40),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            RaisedButton(
-                              child: Text('View Account'),
-                              onPressed: () async {
+                            RoundedButton(Color(0xFF14A6AF),"View Account",() async {
+                               if(snapshot.data.result[index].status == 'user'){
+                               EasyLoading.show(status: 'Loading');
+                               try{
+                               FichePresence fp = await api.loadPresence(snapshot.data.result[index].cin);
+                               EasyLoading.dismiss();
+                               Navigator.push(
+                               context,
+                               MaterialPageRoute(
+                               builder: (BuildContext context) =>AdminViewAccount(user:User().fromSnap(snapshot.data.result, index),fp:fp,admin: admin,)
+                               ));
+                               }
+                               catch(e){
+                               EasyLoading.showError('Loading Failed');
+                               }
+                               }else{
 
-                                if(snapshot.data.result[index].status == 'user'){
-                                  EasyLoading.show(status: 'Loading');
-                                  try{
-                                  FichePresence fp = await api.loadPresence(snapshot.data.result[index].cin);
-                                  EasyLoading.dismiss();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>AdminViewAccount(user:User().fromSnap(snapshot.data.result, index),fp:fp,admin: admin,)
-                                      ));
-                                  }
-                                      catch(e){
-                                        EasyLoading.showError('Loading Failed');
-                                      }
-                                }else{
+                               Navigator.push(
+                               context,
+                               MaterialPageRoute(
+                               builder: (BuildContext context) =>AdminViewAdminAccount(User().fromSnap(snapshot.data.result, index))
+                               ));
+                               EasyLoading.showSuccess('Success');
 
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>AdminViewAdminAccount(User().fromSnap(snapshot.data.result, index))
-                                      ));
-                                  EasyLoading.showSuccess('Success');
-
-                                }
-                              },
-                            ),
-                            SizedBox(width: 50,),
-                            snapshot.data.result[index].status=='user'?GestureDetector(
-                              onTap:(){
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      content: Text('this User will be deleted Permanently!'),
-                                      actions: [
-                                        TextButton(
-                                            onPressed:()async{
-                                              try{
-                                                EasyLoading.show(status: 'Loading');
-                                                await ApiService().deleteUser(snapshot.data.result[index].cin.toString());
-                                                EasyLoading.dismiss();
-                                                Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => ViewUsers(admin)
-                                                ),
-                                              );}
-                                              catch(e){
-                                                EasyLoading.showError('Failure');
-                                                Navigator.pop(context);
-                                              }
-                                            }
-                                            , child: Text('Confirm')
-                                        )],
-                                    ));
-                              },
-                              child: Icon(
-                                  FontAwesomeIcons.trash
-                              ),
-                            ):Container()
+                               }
+                               },),
                           ],
-                        )
+                        ),
+                        snapshot.data.result[index].status=='user'?RoundedButton(Color(0xFF14A6AF),"Delete",(){
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content: Text('this User will be deleted Permanently!'),
+                                actions: [
+                                  TextButton(
+                                      onPressed:()async{
+                                        try{
+                                          EasyLoading.show(status: 'Loading');
+                                          await ApiService().deleteUser(snapshot.data.result[index].cin.toString());
+                                          EasyLoading.dismiss();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => ViewUsers(admin)
+                                            ),
+                                          );}
+                                        catch(e){
+                                          EasyLoading.showError('Failure');
+                                          Navigator.pop(context);
+                                        }
+                                      }
+                                      , child: Text('Confirm')
+                                  )],
+                              ));
+                        },):Container()
                       ],
                     ),
                   ),

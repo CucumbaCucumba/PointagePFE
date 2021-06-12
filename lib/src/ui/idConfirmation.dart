@@ -58,8 +58,7 @@ class IdConfirm extends StatelessWidget {
                           ),
                         ),
                     ),
-                    SizedBox(height: 20,)
-                    ,
+                    SizedBox(height: 20,),
                     RoundedButton(Color(0xFF14A6AF),'This is me', () async {
 
                       List<CameraDescription> cameras = await availableCameras();
