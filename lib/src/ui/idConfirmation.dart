@@ -32,6 +32,7 @@ class IdConfirm extends StatelessWidget {
     u.decodedImage = file;
     SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SafeArea(
             child: Container(

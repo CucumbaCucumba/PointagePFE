@@ -61,8 +61,8 @@ class AdminProfile extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(10, 70, 10,10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(0, 0, 0, 0.2),
-                        borderRadius: BorderRadius.all(Radius.circular(20))
+                      color: Color.fromRGBO(0, 0, 0, 0.2),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
                   ),
                   child: Center(
                     child: Column(
@@ -70,17 +70,17 @@ class AdminProfile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           ReusableCard(
-                              colour: Color(0x33000000),
-                              childCard: ReusableCardContent(
-                                text: 'Create Account',
-                                iconD: FontAwesomeIcons.plus,
-                              ),
+                            colour: Color(0x33000000),
+                            childCard: ReusableCardContent(
+                              text: 'Create Account',
+                              iconD: FontAwesomeIcons.plus,
+                            ),
                             onPress: (){
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context)=> SignUp(cameraDescription: username.cD,admin: username,))
                               );
                             },
-                              ),
+                          ),
                           SizedBox(height: 20,),
                           ReusableCard(
                             colour: Color(0x33000000),
@@ -90,21 +90,21 @@ class AdminProfile extends StatelessWidget {
                             ),
                             onPress: (){Navigator.push(context,
                                 MaterialPageRoute(builder: (context)=> ViewUsers(username))
-                              );
-                           },
+                            );
+                            },
                           ),
-                    ReusableCard(
-                      colour: Color(0x33000000),
-                      childCard: ReusableCardContent(
-                        text: 'Account Settings',
-                        iconD: FontAwesomeIcons.cogs,
-                      ),
-                      onPress: (){Navigator.push(context,
-                          MaterialPageRoute(builder: (context)=> ViewAccountAdmin(username))
-                      );
-                      },
-                    ),
-                          ]
+                          ReusableCard(
+                            colour: Color(0x33000000),
+                            childCard: ReusableCardContent(
+                              text: 'Account Settings',
+                              iconD: FontAwesomeIcons.cogs,
+                            ),
+                            onPress: (){Navigator.push(context,
+                                MaterialPageRoute(builder: (context)=> ViewAccountAdmin(username))
+                            );
+                            },
+                          ),
+                        ]
 
                     ),
                   ),

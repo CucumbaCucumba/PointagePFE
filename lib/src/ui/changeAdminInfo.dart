@@ -38,7 +38,7 @@ class Changeadmin extends State<ChangeAdmin> {
   @override
   void initState()  {
     super.initState();
-     startUp();
+    startUp();
   }
 
   Future startUp() async {
@@ -81,17 +81,17 @@ class Changeadmin extends State<ChangeAdmin> {
                       ),
                       Positioned(right: 1,bottom: 1 ,child: GestureDetector(
                         onTap: ()async{
-                      bR = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => ChangeImage(cameraDescription: cameraDescriptionF,user: user,)
-                      ),
-                      );
-                      user = bR.user;
-                      setState(() {
+                          bR = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChangeImage(cameraDescription: cameraDescriptionF,user: user,)
+                            ),
+                          );
+                          user = bR.user;
+                          setState(() {
 
-                      });
-                      },
+                          });
+                        },
                         child: Container(
                           height: 50, width: 50,
                           child: Icon(Icons.add_a_photo, color: Colors.white,size: 30,),
@@ -105,113 +105,113 @@ class Changeadmin extends State<ChangeAdmin> {
                   ),
                   SizedBox(height: 80,),
                   Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(image: Image.asset('assets/deepOrange.jpg').image,fit:BoxFit.cover )
-                    ),
-                    child:Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        decoration: BoxDecoration(color: Color(0x55000000),borderRadius: BorderRadius.all(Radius.circular(15))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children:[Text('Change admin name :',style: TextStyle(fontSize: 20,color:Colors.white),),
-                           TextField(controller: _userNamePassTextEditingController,
-
-                             decoration: Const.textFieldDeco("Your current admin name is "+user.user),
-                          ),
-                          SizedBox(height: 80,),
-                           Text('Change admin password :',style: TextStyle(fontSize: 20,color:Colors.white),),
-                           SizedBox(height: 20,),
-                           TextField(
-                             controller: _newPassTextEditingController,
-                             decoration: Const.textFieldDeco('new Password'),
-                             obscureText: true,
-                           ),
-                           SizedBox(height: 20,),
-                           TextField(
-                             controller: _cnewPassTextEditingController,
-                             decoration: Const.textFieldDeco("Confirm new password"),
-                             obscureText: true,
-                           ),
-                           SizedBox(height: 80,),
-                           Text('Enter current password :',style: TextStyle(fontSize: 20,color: Colors.white),),
-                           SizedBox(height: 20,),
-                           TextField(
-                             controller: _oldPassTextEditingController,
-                             decoration: Const.textFieldDeco("Your current password"),
-                             obscureText: true,
-                           ),
-                           SizedBox(height: 20,),
-
-                           RoundedButton(Color(0xFF14A6AF), 'Save', ()async{
-                             if((_oldPassTextEditingController.text.isEmpty)||(_oldPassTextEditingController.text!=user.password)){
-                               showDialog(
-                                   context: context,
-                                   builder: (context) => AlertDialog(
-                                     content: Text('Insert Correct Current Password !'),
-                                   ));
-                             }
-                             else{
-                               //checks if there is new pw and if the old pw field = current password
-                               if(bR!=null?bR.c:false){
-                                 if(_newPassTextEditingController.text != _cnewPassTextEditingController.text){
-                                   showDialog(
-                                       context: context,
-                                       builder: (context) => AlertDialog(
-                                         content: Text('New Password confirmation is wrong  !'),
-                                       ));
-                                 }else{
-                                   showDialog(
-                                       context: context,
-                                       builder: (context) => AlertDialog(
-                                         content: Text('are you sure about the changes !'),
-                                         actions: [
-                                           TextButton(
-                                               onPressed:()async{
-                                                 user = await api.changeUserInfo(user.image64,_newPassTextEditingController.text,
-                                                     _userNamePassTextEditingController.text,null,
-                                                     user.cin);
-                                                 Navigator.pop(context,user);
-                                               }
-                                               , child: Text('Confirm')
-                                           )],
-                                       ));
-
-                                 }
-                               }else{
-                                 if(_newPassTextEditingController.text != _cnewPassTextEditingController.text){
-                                   showDialog(
-                                       context: context,
-                                       builder: (context) => AlertDialog(
-                                         content: Text('New Password confirmation is wrong  !'),
-                                       ));
-                                 }else{
-                                   showDialog(
-                                       context: context,
-                                       builder: (context) => AlertDialog(
-                                         content: Text('are you sure about the changes !'),
-                                         actions: [
-                                           TextButton(
-                                               onPressed:()async{
-                                                 user = await api.changeUserInfo(null,_newPassTextEditingController.text,
-                                                     _userNamePassTextEditingController.text,null,
-                                                     user.cin);
-                                                 Navigator.pop(context,user);
-                                               }
-                                               , child: Text('Confirm')
-                                           )],
-                                       ));
-
-
-                                 }
-
-                               }
-                             }
-                           }),]),
-                        ),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(image: Image.asset('assets/deepOrange.jpg').image,fit:BoxFit.cover )
                       ),
-                    ))
+                      child:Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Container(
+                          decoration: BoxDecoration(color: Color(0x55000000),borderRadius: BorderRadius.all(Radius.circular(15))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                                children:[Text('Change admin name :',style: TextStyle(fontSize: 20,color:Colors.white),),
+                                  TextField(controller: _userNamePassTextEditingController,
+
+                                    decoration: Const.textFieldDeco("Your current admin name is "+user.user),
+                                  ),
+                                  SizedBox(height: 80,),
+                                  Text('Change admin password :',style: TextStyle(fontSize: 20,color:Colors.white),),
+                                  SizedBox(height: 20,),
+                                  TextField(
+                                    controller: _newPassTextEditingController,
+                                    decoration: Const.textFieldDeco('new Password'),
+                                    obscureText: true,
+                                  ),
+                                  SizedBox(height: 20,),
+                                  TextField(
+                                    controller: _cnewPassTextEditingController,
+                                    decoration: Const.textFieldDeco("Confirm new password"),
+                                    obscureText: true,
+                                  ),
+                                  SizedBox(height: 80,),
+                                  Text('Enter current password :',style: TextStyle(fontSize: 20,color: Colors.white),),
+                                  SizedBox(height: 20,),
+                                  TextField(
+                                    controller: _oldPassTextEditingController,
+                                    decoration: Const.textFieldDeco("Your current password"),
+                                    obscureText: true,
+                                  ),
+                                  SizedBox(height: 20,),
+
+                                  RoundedButton(Color(0xFF14A6AF), 'Save', ()async{
+                                    if((_oldPassTextEditingController.text.isEmpty)||(_oldPassTextEditingController.text!=user.password)){
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            content: Text('Insert Correct Current Password !'),
+                                          ));
+                                    }
+                                    else{
+                                      //checks if there is new pw and if the old pw field = current password
+                                      if(bR!=null?bR.c:false){
+                                        if(_newPassTextEditingController.text != _cnewPassTextEditingController.text){
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                content: Text('New Password confirmation is wrong  !'),
+                                              ));
+                                        }else{
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                content: Text('are you sure about the changes !'),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed:()async{
+                                                        user = await api.changeUserInfo(user.image64,_newPassTextEditingController.text,
+                                                            _userNamePassTextEditingController.text,null,
+                                                            user.cin);
+                                                        Navigator.pop(context,user);
+                                                      }
+                                                      , child: Text('Confirm')
+                                                  )],
+                                              ));
+
+                                        }
+                                      }else{
+                                        if(_newPassTextEditingController.text != _cnewPassTextEditingController.text){
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                content: Text('New Password confirmation is wrong  !'),
+                                              ));
+                                        }else{
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                content: Text('are you sure about the changes !'),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed:()async{
+                                                        user = await api.changeUserInfo(null,_newPassTextEditingController.text,
+                                                            _userNamePassTextEditingController.text,null,
+                                                            user.cin);
+                                                        Navigator.pop(context,user);
+                                                      }
+                                                      , child: Text('Confirm')
+                                                  )],
+                                              ));
+
+
+                                        }
+
+                                      }
+                                    }
+                                  }),]),
+                          ),
+                        ),
+                      ))
 
                 ],
               ),

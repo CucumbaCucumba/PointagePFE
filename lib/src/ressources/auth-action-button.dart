@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:FaceNetAuthentication/src/ressources/Constants.dart';
 import 'package:FaceNetAuthentication/src/ressources/RoundedButton.dart';
 import 'package:path_provider/path_provider.dart';
-import 'file:///E:/PointagePFE/lib/src/ui/Presence.dart';
+import 'package:FaceNetAuthentication/src/ui/Presence.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/api_provider.dart';
 import 'file:///E:/PointagePFE/lib/src/ui/userProfile.dart';
 import 'file:///E:/PointagePFE/lib/src/ressources/facenet.service.dart';
@@ -132,7 +132,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                           child: Column(
                             children: [
                               Text(
-                              'User not found 😞',
+                              'Wrong User 😞',
                               style: TextStyle(fontSize: 20),
                         ),
                               SizedBox(
@@ -149,14 +149,12 @@ class _AuthActionButtonState extends State<AuthActionButton> {
                                     );
                                   }),
                                   SizedBox(width: 50,),
-                                  RaisedButton(
-                                      child:Text('Cancel'),
-                                      onPressed: (){
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (BuildContext context) =>MyHomePage()
-                                            ));
-                                      }
-                                  )
+                                  RoundedButton(Color(0xFF009688),"Cancel", (){
+                                    Navigator.push(context,
+                                     MaterialPageRoute(builder: (BuildContext context) =>MyHomePage()
+                                        ));
+                                       }
+                                      )
                                 ],
                               )
                             ],

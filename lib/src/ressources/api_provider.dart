@@ -1,7 +1,7 @@
 import 'dart:async';
-import '../ui/Presence.dart';
 import 'package:FaceNetAuthentication/src/models/User.dart';
 import 'package:FaceNetAuthentication/src/models/users.dart';
+import 'package:FaceNetAuthentication/src/ui/Presence.dart';
 
 
 import 'package:dio/dio.dart' ;

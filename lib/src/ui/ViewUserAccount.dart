@@ -1,5 +1,7 @@
 import 'package:FaceNetAuthentication/src/ressources/NavBar.dart';
+import 'package:FaceNetAuthentication/src/ressources/RoundedButton.dart';
 import 'package:FaceNetAuthentication/src/ui/AlterTime.dart';
+import 'package:FaceNetAuthentication/src/ui/changeAdminInfo.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'adminChangeUserInfo.dart';
@@ -38,171 +40,110 @@ class AdminViewAccount extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
+                  Stack(
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 80,
+                        child: ClipOval(child: Image(image: Image.file(user.decodedImage).image, height: 150, width: 150, fit: BoxFit.cover,),),
+                      ),
+                      Positioned(right: 1,bottom: 1 ,child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => AdminChangePass( user: user,)));
+                        }
 
-                    width: 200,
-                    height: 200,
-                    child: Image(image: Image.file(user.decodedImage).image,),
-
-                  ),
-                  Text(
-                    'User :' + user.user,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'CIN :' + user.cin.toString(),
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Status :' + user.status,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  TextButton(
-                    onPressed: ()async{
-                      user = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AdminChangePass(user)
+                        ,
+                        child: Container(
+                          height: 50, width: 50,
+                          child: Icon(FontAwesomeIcons.cog, color: Colors.white,size: 30,),
+                          decoration: BoxDecoration(
+                              color: Colors.teal,
+                              borderRadius: BorderRadius.all(Radius.circular(50))
+                          ),
                         ),
-
-                      );
-
-                      Navigator.pop(context,user);
-                    }, child: Text('Change User Info'),),
-
+                      ))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                  children:[Text(
+                  'User :' + user.user,
+                  style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                  height: 20,
+                  ),
+                  Text(
+                  'CIN :' + user.cin.toString(),
+                  style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                  height: 20,
+                  ),
+                  Text(
+                  'Status :' + user.status,
+                  style: TextStyle(fontSize: 20),
+                  ),
+                   SizedBox(height: 20,),
+                   Text('Worked Hours :' + fp.forDurationHour(dTR).toString(),
+                   style: TextStyle(fontSize: 20),)
+                  ]),
                   SizedBox(height: 50,),
                   Center(
                     child: fp.forDurationMin(dTR)<1?Text("this user has no recorded Work Time"): Container(
                       child: Column(
-                          children:[TimeChart(
-                              data: dTR,
-                              viewMode: ViewMode.weekly
-                          ),
-                            SizedBox(height: 20,),
-                            TimeChart(
-                            data: dTR,
-                            viewMode: ViewMode.weekly,
-                            chartType: ChartType.amount,
-                          ),
-                            SizedBox(height: 40,),
-                            RaisedButton(
-                                child:Text('Alter User Presence') ,
-                                onPressed:(){
-                                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR:dTR,cin:user.cin,fp: fp,user: admin,)));
-                                }),
-                            SizedBox(height: 40,),
-                            Text(fp.forDurationHour(dTR).toString()),
-                            SizedBox(height: 20,),
-                            Row(
-                              children: [
-                                Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Text('Hours'),
-                                        Text(fp.forDurationHour(dTR).toString(),
-                                        style: TextStyle(fontSize: 30),),
-                                      ],
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: Offset(0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                    border: Border.all(
-                                      color: Colors.redAccent,
-                                      width: 5,
-                                      style: BorderStyle.solid
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
-
-                                  ),
-                                ),
-                                SizedBox(width: 20,),
-                                Icon(
-                                    FontAwesomeIcons.times,
-                                  size: 60,
-
-                                  ),
-                                SizedBox(width: 20,),
-                                Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Text('Wage')
-                                        ,
-                                        Text(user.wage.toString(),
-                                          style: TextStyle(fontSize: 30),),
-                                      ],
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 2,
-                                          blurRadius: 5,
-                                          offset: Offset(0, 3), // changes position of shadow
-                                        ),
-                                      ],
-                                      border: Border.all(
-                                          color: Colors.redAccent,
-                                          width: 5,
-                                          style: BorderStyle.solid
-                                      ),
-                                      borderRadius: BorderRadius.all(Radius.circular(10))
-
-                                  ),
-                                ),
-                              ],
+                          children:[Container(
+                            decoration: BoxDecoration(
+                              color: Color(0x11000000),
+                              borderRadius: BorderRadius.all(Radius.circular(10))
                             ),
-                            SizedBox(height: 20,),
-                            Icon (FontAwesomeIcons.equals,size: 60,),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Time Chart",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(height: 10),
+                                  TimeChart(
+                                      width: 400,
+                                      height: 400,
+                                      data: dTR,
+                                      viewMode: ViewMode.weekly
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                             SizedBox(height: 20,),
                             Container(
+                              decoration: BoxDecoration(
+                                color: Color(0x11000000),
+                                  borderRadius: BorderRadius.all(Radius.circular(10))
+                              ) ,
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(15.0),
                                 child: Column(
                                   children: [
-                                    Text((user.wage * fp.forDurationHour(dTR)).toString(),
-                                      style: TextStyle(fontSize: 30),),
+                                    Text("Amount of Time",style: TextStyle(fontSize: 20),),
+                                    SizedBox(height: 10,),
+                                    TimeChart(
+                                      width: 400,
+                                      height: 400,
+                                      data: dTR,
+                                      viewMode: ViewMode.weekly,
+                                      chartType: ChartType.amount,
+                          ),
                                   ],
                                 ),
                               ),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: Offset(0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                  border: Border.all(
-                                      color: Colors.redAccent,
-                                      width: 5,
-                                      style: BorderStyle.solid
-                                  ),
-                                  borderRadius: BorderRadius.all(Radius.circular(10))
-
-                              ),
                             ),
+                            SizedBox(height: 40,),
+                            RoundedButton(Colors.teal, 'Alter User Presence',(){
+                              Navigator.push(context,MaterialPageRoute(builder: (context) =>  AlterTime(dTR:dTR,cin:user.cin,fp: fp,user: admin,)));
+                            } ),
 
 
                           ]

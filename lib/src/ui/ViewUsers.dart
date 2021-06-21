@@ -1,5 +1,6 @@
 import 'package:FaceNetAuthentication/src/blocs/UsersBloc.dart';
 import 'package:FaceNetAuthentication/src/models/users.dart';
+import 'package:FaceNetAuthentication/src/ressources/NavBar.dart';
 import 'package:FaceNetAuthentication/src/ressources/RoundedButton.dart';
 import 'package:FaceNetAuthentication/src/ressources/api_provider.dart';
 import 'package:FaceNetAuthentication/src/ressources/base64Functions.dart';
@@ -26,6 +27,7 @@ class ViewUsers extends StatelessWidget {
   Widget build(BuildContext context) {
     bloc.fetchAllUsers();
     return Scaffold(
+      drawer: AdminNavBar(admin),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text('Users'),

@@ -79,86 +79,89 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
   //   appBar: AppBar(
   //     title: Text('Face recognition auth'),
   //     leading: Container(),
   //   ),
-      body: Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            'assets/deepOrange.jpg'
-          ),
-            fit: BoxFit.cover
-        )
-      ),
-        child: !loading
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 200,
-                      width: 200,
-                      child: Image.asset('assets/logo.png'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: TextField(
-                        controller: _cINTextEditingController ,
-                        keyboardType: TextInputType.number,
-                        inputFormatters:<TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                style: TextStyle(
-                      color: Colors.white
-                ),
-                      decoration: Const.textFieldDeco('Enter CIN Number'),
-
+        body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'assets/deepOrange.jpg'
+            ),
+              fit: BoxFit.cover
+          )
+        ),
+          child: !loading
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: 200,
+                        width: 200,
+                        child: Image.asset('assets/logo.png'),
                       ),
-                    ),
-                    RoundedButton(Color(0xFF14A6AF),'Log In',() async{
-                      Response response;
-                      if(_cINTextEditingController.text.length!=8){
-                        ScaffoldMessenger.of(context).showSnackBar(twix);
-                      }else{
-                        try{
-                          EasyLoading.show(status: 'Loading');
-                          var cin = int.parse(_cINTextEditingController.text);
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: TextField(
+                          controller: _cINTextEditingController ,
+                          keyboardType: TextInputType.number,
+                          inputFormatters:<TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                  style: TextStyle(
+                        color: Colors.white
+                  ),
+                        decoration: Const.textFieldDeco('Enter CIN Number'),
 
-                          response = await _dataBaseService.loadUser(cin);
+                        ),
+                      ),
+                      RoundedButton(Color(0xFF14A6AF),'Log In',() async{
+                        Response response;
+                        if(_cINTextEditingController.text.length!=8){
+                          ScaffoldMessenger.of(context).showSnackBar(twix);
+                        }else{
+                          try{
+                            EasyLoading.show(status: 'Loading');
+                            var cin = int.parse(_cINTextEditingController.text);
 
-                          Directory tempDir = await getTemporaryDirectory();
+                            response = await _dataBaseService.loadUser(cin);
 
-                          EasyLoading.dismiss();
+                            Directory tempDir = await getTemporaryDirectory();
 
-                          if(response.statusCode == 200){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => IdConfirm(path: tempDir.path,u: _dataBaseService.currUser,),
-                              ),
-                            );}
-                          else
-                          {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("wrong CIN"),
-                            ));
+                            EasyLoading.dismiss();
+
+                            if(response.statusCode == 200){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => IdConfirm(path: tempDir.path,u: _dataBaseService.currUser,),
+                                ),
+                              );}
+                            else
+                            {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("wrong CIN"),
+                              ));
+                            }
                           }
-                        }
-                        catch(e){
-                          EasyLoading.showError('Loading Failed');
-                        }
+                          catch(e){
+                            EasyLoading.showError('Loading Failed');
+                          }
 
-                      }
-                    }, )
-                  ],
-                ),
-              )
-         : Center(
-             child: CircularProgressIndicator(),
-           ),
+                        }
+                      }, )
+                    ],
+                  ),
+                )
+           : Center(
+               child: CircularProgressIndicator(),
+             ),
+        ),
       ),
     );
   }
